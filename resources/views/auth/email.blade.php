@@ -16,24 +16,22 @@
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 card auth-card ">
                <h4 class="mt-4 text-center"> 
-                Please <span class="text-primary">Sign In</span>
+                Reset <span class="text-primary">Password</span>
                </h4>
                <form action="">
                 <div class="mt-5">
                     <div class=" input-group-md">
-                        <input type="text" required class="form-control" placeholder="Enter User Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="email" required class="form-control" placeholder="Enter Your Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
-                      <div class="input-group-md mt-3">
-                        <input type="password" required class="form-control" placeholder="Enter your password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                      </div>
-                      <div class="mt-5">
+                      <div class="mt-4">
                         <button class="btn btn-primary w-100">
-                            SignIn
+                            Submit
                         </button>
+                    
                       </div>
                       <div class="d-flex justify-content-between mt-2 mb-4">
-                        <div class="text-primary auth-anker"><a href="/email-forget">
-                            Forgot your Password?</a></div>
+                        <div class="text-primary auth-anker"><a href="/login">
+                            Login</a></div>
                         <div class="text-priamry auth-anker"><a href="/signup">
                             Register</a></div>
                       </div>

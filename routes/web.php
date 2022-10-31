@@ -28,3 +28,11 @@ Route::get('/login', function () {
 Route::get('/signup', function () {
     return view('auth/signup');
 });
+
+Route::get('/email-forget', function () {
+    return view('auth/email');
+});
+
+Route::get('/new-password', function () {
+    return view('auth/newpassword');
+});

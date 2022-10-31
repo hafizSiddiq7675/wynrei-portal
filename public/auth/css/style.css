@@ -18,3 +18,13 @@ text-decoration: none;
     justify-content: center;
     min-height: 100vh;
 }
+
+@media only screen and (max-width: 600px) {
+    .auth-card {
+        width: 90% !important;
+        padding: 50px !important;
+        border-radius: 5px !important;
+        border: none !important;
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    }
+  }
