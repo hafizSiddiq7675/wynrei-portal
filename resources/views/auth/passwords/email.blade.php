@@ -16,42 +16,29 @@
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 card auth-card ">
                <h4 class="mt-4 text-center">
-                Please <span class="text-primary">Sign Ins</span>
+                Reset <span class="text-primary">Password</span>
                </h4>
-               <form method="POST" action="{{ route('login') }}">
+               <form method="POST" action="{{ route('password.email') }}">
                     @csrf
                 <div class="mt-5">
                     <div class=" input-group-md">
-                        <input type="email" name="email"  class="form-control" placeholder="Enter User Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="{{ old('email') }}" autofocus>
+                        <input type="email" name="email" required class="form-control" placeholder="Enter Your Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{ old('email') }}" autofocus>
                         @error('email')
-                            <span class="" role="alert">
+                            <span class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                       </div>
-
-                      <div class="input-group-md mt-3">
-                        <input type="password" name="password" required class="form-control" placeholder="Enter your password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                      </div>
-                      <div class="input-group-md mt-3">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                        {{-- <input type="password" name="password" required class="form-control" placeholder="Enter your password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> --}}
-                      </div>
-                      <div class="mt-5">
+                      <div  class="mt-4">
                         <button type="submit" class="btn btn-primary w-100">
-                            SignIn
+                            Submit
                         </button>
+
                       </div>
                       <div class="d-flex justify-content-between mt-2 mb-4">
-                        @if (Route::has('password.request'))
-                        <div class="text-primary auth-anker"><a href="{{ route('password.request') }}">
-                            Forgot your Password?</a>
-                        </div>
-                        @endif
-                        <div class="text-priamry auth-anker"><a href="{{ route('register') }}">
+                        <div class="text-primary auth-anker"><a href="/login">
+                            Login</a></div>
+                        <div class="text-priamry auth-anker"><a href="/signup">
                             Register</a></div>
                       </div>
                       <div class="text-center text-muted">

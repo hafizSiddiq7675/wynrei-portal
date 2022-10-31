@@ -16,43 +16,48 @@
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 card auth-card ">
                <h4 class="mt-4 text-center">
-                Please <span class="text-primary">Sign Ins</span>
+                Please <span class="text-primary">Sign Up</span>
                </h4>
-               <form method="POST" action="{{ route('login') }}">
+               <form method="POST" action="{{ route('register') }}">
                     @csrf
                 <div class="mt-5">
                     <div class=" input-group-md">
-                        <input type="email" name="email"  class="form-control" placeholder="Enter User Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="{{ old('email') }}" autofocus>
+                        <input type="text" name="name" required class="form-control" placeholder="Enter First Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{ old('name') }}">
+                        @error('name')
+                            <span class="text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+
+                      <div class=" input-group-md mt-3">
+                        <input type="email" name="email" required class="form-control" placeholder="Enter Your Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{ old('email') }}">
                         @error('email')
                             <span class="" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                       </div>
-
-                      <div class="input-group-md mt-3">
-                        <input type="password" name="password" required class="form-control" placeholder="Enter your password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    <div class=" input-group-md mt-3">
+                        <input type="password" name="password" required class="form-control" placeholder="Enter Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        @error('password')
+                            <span class="text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                       </div>
                       <div class="input-group-md mt-3">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                        {{-- <input type="password" name="password" required class="form-control" placeholder="Enter your password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> --}}
+                        <input type="password" name="password_confirmation" required class="form-control" placeholder="Confirm Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                       <div class="mt-5">
                         <button type="submit" class="btn btn-primary w-100">
-                            SignIn
+                            SignUp
                         </button>
                       </div>
-                      <div class="d-flex justify-content-between mt-2 mb-4">
-                        @if (Route::has('password.request'))
-                        <div class="text-primary auth-anker"><a href="{{ route('password.request') }}">
-                            Forgot your Password?</a>
-                        </div>
-                        @endif
-                        <div class="text-priamry auth-anker"><a href="{{ route('register') }}">
-                            Register</a></div>
+                      <div class="d-flex justify-content-center mt-2 mb-4">
+
+                        <div class="text-priamry auth-anker"><a href="{{ route('login') }}">
+                            Login</a></div>
                       </div>
                       <div class="text-center text-muted">
                         © 2022 All Rights Reserved. WYNREI Portal -
