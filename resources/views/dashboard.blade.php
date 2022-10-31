@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('AdminLTE-master/dist/css/adminlte.min.css')}}">
+
+  <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <!--
 `body` tag options:
@@ -209,7 +215,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/user" class="nav-link">
+            <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 User
