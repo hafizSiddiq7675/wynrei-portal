@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +51,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/user', function () {
     return view('Admin/user/index');
 });
+
+//Users
+Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
+Route::resource('users', UserController::class);
