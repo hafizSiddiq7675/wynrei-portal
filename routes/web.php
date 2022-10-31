@@ -52,6 +52,18 @@ Route::get('/user', function () {
     return view('Admin/user/index');
 });
 
+Route::get('/property', function () {
+    return view('Admin/Properties/index');
+});
+
+Route::get('/bid', function () {
+    return view('Admin/Bid/index');
+});
+
+Route::get('/market', function () {
+    return view('Admin/Market/index');
+});
+
 //Users
 Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
 Route::resource('users', UserController::class);

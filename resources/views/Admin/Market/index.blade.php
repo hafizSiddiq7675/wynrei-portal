@@ -6,10 +6,9 @@
             <thead class="bg-primary text-white header-border text-center">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Address</th>
-                <th scope="col">City </th>
-                <th scope="col">State</th>
-                <th scope="col">Zip</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author </th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -18,8 +17,7 @@
                 <th>1</th>
                 <td>abc</td>
                 <td>Mark</td>
-                <td>Otto</td>
-                <td>abcd</td>
+                <td>available</td>
                 <td class="">
                   <div class="d-flex justify-content-center">
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addusermodal">add</button>
@@ -39,23 +37,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="staticBackdropLabel">Add Property</h4>
+          <h4 class="modal-title" id="staticBackdropLabel">Add Market</h4>
         </div>
         <div class="modal-body">
           <div>
             <form action="">
                 <div class="mt-4 mb-4">
                     <div class=" input-group-md">
-                        <input type="text" required class="form-control" placeholder="Enter Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                     <div class=" input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter City" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Author" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
-                      <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter State" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                      </div>
-                      <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter Zip" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                      <div class="mt-3">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select Status</option>
+                            <option value="1">Available</option>
+                            <option value="2">Not Available</option>
+                          </select>
                       </div>
                 </div>
                </form>
@@ -74,23 +73,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="staticBackdropLabel">Edit Property</h4>
+          <h4 class="modal-title" id="staticBackdropLabel">Edit Market</h4>
         </div>
         <div class="modal-body">
           <div>
             <form action="">
                 <div class="mt-4 mb-4">
                     <div class=" input-group-md">
-                        <input type="text" required class="form-control" placeholder="Enter Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                     <div class=" input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter City" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Author" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
-                      <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter State" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-                      </div>
-                      <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter Zip" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                      <div class="mt-3">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select Status</option>
+                            <option value="1">Available</option>
+                            <option value="2">Not Available</option>
+                          </select>
                       </div>
                 </div>
                </form>

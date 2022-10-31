@@ -6,19 +6,19 @@
             <thead class="bg-primary text-white header-border text-center">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Address</th>
-                <th scope="col">City </th>
-                <th scope="col">State</th>
-                <th scope="col">Zip</th>
+                <th scope="col">Property Id</th>
+                <th scope="col">Added By </th>
+                <th scope="col">Bid Amount</th>
+                <th scope="col">Note</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody class="text-center">
               <tr>
                 <th>1</th>
-                <td>abc</td>
+                <td>proprty id</td>
                 <td>Mark</td>
-                <td>Otto</td>
+                <td>123</td>
                 <td>abcd</td>
                 <td class="">
                   <div class="d-flex justify-content-center">
@@ -39,23 +39,33 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="staticBackdropLabel">Add Property</h4>
+          <h4 class="modal-title" id="staticBackdropLabel">Add Bid</h4>
         </div>
         <div class="modal-body">
           <div>
             <form action="">
                 <div class="mt-4 mb-4">
-                    <div class=" input-group-md">
-                        <input type="text" required class="form-control" placeholder="Enter Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    <div class="">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select proprty id</option>
+                            <option value="1">Property Lookup</option>
+                            <option value="2">Average Rental price</option>
+                            <option value="3">Three</option>
+                          </select>
                       </div>
-                    <div class=" input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter City" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    <div class="mt-3">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select added by</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
                       </div>
                       <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter State" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                       <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter Zip" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Note" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                 </div>
                </form>
@@ -74,23 +84,33 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="staticBackdropLabel">Edit Property</h4>
+          <h4 class="modal-title" id="staticBackdropLabel">Edit Bid</h4>
         </div>
         <div class="modal-body">
           <div>
             <form action="">
                 <div class="mt-4 mb-4">
-                    <div class=" input-group-md">
-                        <input type="text" required class="form-control" placeholder="Enter Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    <div class="">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select proprty id</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
                       </div>
-                    <div class=" input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter City" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                    <div class="mt-3">
+                        <select class="form-select form-control" aria-label="Default select example">
+                            <option selected>Select added by</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
                       </div>
                       <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter State" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                       <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter Zip" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="text" required class="form-control" placeholder="Enter Note" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                 </div>
                </form>
@@ -105,6 +125,5 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
 
 @endsection
