@@ -18,7 +18,16 @@ text-decoration: none;
     justify-content: center;
     min-height: 100vh;
 }
-
+.table-card {
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+.table thead th:first-child {
+    border-top-left-radius: 9px !important;
+   }
+   
+   .table thead th:last-child {
+    border-top-right-radius: 9px !important;
+   }
 @media only screen and (max-width: 600px) {
     .auth-card {
         width: 90% !important;
