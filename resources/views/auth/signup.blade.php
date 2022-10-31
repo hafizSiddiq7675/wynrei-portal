@@ -14,7 +14,7 @@
     <div class="container">
        <div class="vertical-alignment">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-4 card auth-card ">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 card auth-card ">
                <h4 class="mt-4 text-center"> 
                 Please <span class="text-primary">Sign Up</span>
                </h4>
@@ -26,22 +26,30 @@
                       <div class=" input-group-md mt-3">
                         <input type="text" required class="form-control" placeholder="Enter Last Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
+                      <div class=" input-group-md mt-3">
+                        <input type="email" required class="form-control" placeholder="Enter Your Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                      </div>
                     <div class=" input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Enter Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="password" required class="form-control" placeholder="Enter Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                       <div class="input-group-md mt-3">
-                        <input type="text" required class="form-control" placeholder="Confirm Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        <input type="password" required class="form-control" placeholder="Confirm Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
                       <div class="mt-5">
                         <button class="btn btn-primary w-100">
                             SignUp
                         </button>
                       </div>
-                      <div class="d-flex justify-content-between mt-2 mb-4">
-                        <div class="text-primary auth-anker"><a href="#">
-                            Forgot your Password?</a></div>
+                      <div class="d-flex justify-content-center mt-2 mb-4">
+                       
                         <div class="text-priamry auth-anker"><a href="/login">
                             Login</a></div>
+                      </div>
+                      <div class="text-center text-muted">
+                        © 2022 All Rights Reserved. WYNREI Portal -
+                      </div>
+                      <div class="text-primary text-center">
+                        Privacy Policy | Terms & Conditions
                       </div>
                 </div>
                </form>
