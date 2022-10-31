@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.auth-card {
+    padding: 50px !important;
+    border-radius: 5px !important;
+    border: none !important;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+.auth-anker >a{
+text-decoration: none;
+}
+.vertical-alignment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+}
