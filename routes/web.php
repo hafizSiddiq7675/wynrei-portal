@@ -29,10 +29,19 @@ Route::get('/signup', function () {
     return view('auth/signup');
 });
 
-Route::get('/email-forget', function () {
-    return view('auth/email');
+Route::get('/forget', function () {
+    return view('auth_old/email');
 });
 
 Route::get('/new-password', function () {
     return view('auth/newpassword');
 });
+
+Route::get('/test', function () {
+    // return view('auth/newpassword');
+  echo ini_get('memory_limit');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
