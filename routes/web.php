@@ -36,3 +36,7 @@ Route::get('/email-forget', function () {
 Route::get('/new-password', function () {
     return view('auth/newpassword');
 });
+
+Route::get('/user', function () {
+    return view('Admin/user/index');
+});
