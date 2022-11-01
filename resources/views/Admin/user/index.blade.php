@@ -13,6 +13,8 @@
                       <th scope="col">#</th>
                       <th scope="col">Name</th>
                       <th scope="col">Email </th>
+                      <th scope="col">Type </th>
+                      <th scope="col">Phone </th>
                       <th width="30%" scope="col">Action</th>
                     </tr>
                   </thead>
@@ -74,12 +76,14 @@
                 { "data": "id" },
                 { "data": "name" },
                 { "data": "email" },
+                { "data": "type" },
+                { "data": "phone" },
                 { "data": "action" , orderable: false, searchable: false }
             ]
 
         });
 
-});
+    });
 
 
 
@@ -91,7 +95,7 @@
 
     $(document).on('click', '.delete-user', function(){
             var id = $(this).data('id');
-alert(id);
+
 
             swal({
                 title: "Are you sure?",
