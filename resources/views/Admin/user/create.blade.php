@@ -25,7 +25,20 @@
                             <span id="email-error-msg-add" class="text-danger pl-1"><span>
                         </div>
 
-                        <div class=" input-group-md">
+                        <div class=" input-group-md mt-3">
+                            <b>Phone : </b>
+                            <input type="text"  name ="phone"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
+                        </div>
+
+                        <div class="input-group-md mt-3">
+                            <label for="">User Type *</label>
+                            <select required name="type" class="form-control">
+                                <option selected value="REAL STATE AGENT">REAL STATE AGENT</option>
+                                <option  value="INVESTOR">INVESTOR</option>
+                            </select>
+                        </div>
+
+                        <div class=" input-group-md mt-3">
                             <b>Password : </b>
                             <input type="password"  name ="password"   class="form-control" placeholder="Enter Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
                             <span id="password-error-msg-add" class="text-danger pl-1"><span>
