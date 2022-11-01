@@ -20,15 +20,39 @@ text-decoration: none;
 }
 .table-card {
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    margin: 0px 15px;
 }
-.table thead th:first-child {
+/* .table thead th:first-child {
     border-top-left-radius: 9px !important;
    }
    
    .table thead th:last-child {
     border-top-right-radius: 9px !important;
-   }
+   } */
+.toggel-buuton {
+    visibility: hidden !important;
+}
+.offcanvas {
+    visibility: hidden;
+}
+
+.navbar-nav>.active>a {
+    color: blue !important;
+    border-bottom: 2px solid blue;
+}
 @media only screen and (max-width: 600px) {
+    .offcanvas {
+        visibility: visible;
+    }
+    .nav-mobile {
+        list-style: none;
+    }
+    .nav-link-mobile {
+        margin-top: -20px;
+    }
+    .toggel-buuton {
+        visibility: visible !important;
+    }
     .auth-card {
         width: 90% !important;
         padding: 50px !important;
