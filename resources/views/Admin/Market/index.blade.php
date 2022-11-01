@@ -38,6 +38,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="staticBackdropLabel">Add Market</h4>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <div>
@@ -74,6 +77,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="staticBackdropLabel">Edit Market</h4>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <div>

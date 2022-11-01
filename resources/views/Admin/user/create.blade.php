@@ -6,6 +6,9 @@
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" id="staticBackdropLabel">Add user</h4>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
                 <div>
@@ -16,7 +19,7 @@
                             <input type="text" name ="name" class="form-control" placeholder="Enter Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="">
                             <span id="name-error-msg-add" class="text-danger pl-1"><span>
                         </div>
-                        <div class=" input-group-md mt-3">
+                        <div class=" input-group-md">
                             <b>Email : </b>
                             <input type="email"  name ="email"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
                             <span id="email-error-msg-add" class="text-danger pl-1"><span>
@@ -41,7 +44,7 @@
                             <span id="password-error-msg-add" class="text-danger pl-1"><span>
                         </div>
 
-                        <div class=" input-group-md mt-3">
+                        <div class=" input-group-md">
                             <b>Confirm Password : </b>
                             <input type="password"  name ="password_confirmation"   class="form-control" placeholder="Confirm Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
 
