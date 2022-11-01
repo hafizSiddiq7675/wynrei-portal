@@ -35,7 +35,9 @@ class UserController extends Controller
             0 =>'id',
             1 =>'name',
             2 =>'email',
-            3=>'action'
+            3 =>'type',
+            4 =>'phone',
+            5 =>'action'
 
         );
 
@@ -67,6 +69,8 @@ class UserController extends Controller
                         $users =  User::where('id','LIKE',"%{$search}%")
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
+                                    ->orWhere('type', 'LIKE',"%{$search}%")
+                                    ->orWhere('phone', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
@@ -75,6 +79,8 @@ class UserController extends Controller
                         $totalFiltered = User::where('id','LIKE',"%{$search}%")
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
+                                    ->orWhere('type', 'LIKE',"%{$search}%")
+                                    ->orWhere('phone', 'LIKE',"%{$search}%")
                                     ->count();
 
                 }
@@ -91,6 +97,8 @@ class UserController extends Controller
                 $nestedData['id'] = $user->id;
                 $nestedData['name'] = $user->name;
                 $nestedData['email'] = $user->email;
+                $nestedData['type'] = $user->type;
+                $nestedData['phone'] = $user->phone;
 
 
 
@@ -167,6 +175,8 @@ class UserController extends Controller
            $user = User::where('id', $request->user_id)->first();
            $user->name = $request->name;
            $user->email = $request->email;
+           $user->type = $request->type;
+           $user->phone = $request->phone;
            if(isset($request->password))
            {
             $user->password = Hash::make($request->password);
@@ -219,6 +229,25 @@ class UserController extends Controller
     {
         $user = User::where('id', $id)->first();
 
+        if($user->type == 'REAL STATE AGENT')
+        {
+            $options = '
+            <option  disabled>Select Type</option>
+            <option selected value="REAL STATE AGENT">REAL STATE AGENT</option>
+            <option value="INVESTOR">INVESTOR</option>
+            ';
+        }
+
+        if($user->type == 'INVESTOR')
+        {
+            $options = '
+            <option  disabled>Select Type</option>
+            <option value="REAL STATE AGENT">REAL STATE AGENT</option>
+            <option selected value="INVESTOR">INVESTOR</option>
+            ';
+        }
+
+
         $html = '
 
         <div class="modal-dialog">
@@ -239,6 +268,18 @@ class UserController extends Controller
                         <b>Email : </b>
                         <input type="email"  name ="email"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="'.$user->email.'">
                         <span id="email-error-msg" class="text-danger pl-1"><span>
+                    </div>
+
+                    <div class=" input-group-md mt-3">
+                        <b>Phone : </b>
+                        <input type="text"  name ="phone"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="'.$user->phone.'">
+                    </div>
+
+                    <div class="input-group-md mt-3">
+                        <label for="">User Type *</label>
+                        <select required name="type" class="form-control">
+                            '.$options.'
+                        </select>
                     </div>
 
                     <div class=" input-group-md mt-3">

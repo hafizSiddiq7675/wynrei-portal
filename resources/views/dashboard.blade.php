@@ -19,6 +19,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+
 </head>
 <!--
 `body` tag options:
@@ -224,7 +225,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/property" class="nav-link">
+            <a href="{{ route('property.index') }}" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Property

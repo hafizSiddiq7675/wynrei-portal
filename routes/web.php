@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PropertyController;
 
 
 /*
@@ -67,3 +68,7 @@ Route::get('/market', function () {
 //Users
 Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
 Route::resource('users', UserController::class);
+
+//Property
+Route::post('/property-data', [App\Http\Controllers\PropertyController::class, 'data'])->name('property-data');
+Route::resource('property', PropertyController::class);

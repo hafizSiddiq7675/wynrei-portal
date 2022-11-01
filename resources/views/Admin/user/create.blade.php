@@ -81,6 +81,7 @@
                                 button: "OK!",
                                 timer: 1000,
                             });
+                            $('#add-user-form').trigger("reset");
                             $('#addusermodal').modal('hide');
                             $('#user-data-table').DataTable().ajax.reload();
                         }else{
