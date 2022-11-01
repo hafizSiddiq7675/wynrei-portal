@@ -372,6 +372,9 @@ class PropertyController extends Controller
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="staticBackdropLabel">Update Property</h4>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           </div>
           <div class="modal-body">
             <div>
@@ -381,14 +384,14 @@ class PropertyController extends Controller
                       <div class="row">
                             <input type="text" value="'.$property->id.'" name="property_id" required class="form-control" placeholder="Enter Property Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 
-                          <div class="col-6">
+                          <div class="col-6 mt-3">
                               <div class=" input-group-md">
                                   <label for="">Property Address *</label>
                                   <input type="text" value="'.$property->property_addres.'" name="property_addres" required class="form-control" placeholder="Enter Property Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                               </div>
                           </div>
 
-                          <div class="col-6">
+                          <div class="col-6 mt-3">
                               <div class=" input-group-md ">
                                   <label for="">Address line 2</label>
                                   <input type="text" name="address_line_2" value="'.$property->address_line_2.'"  class="form-control" placeholder="Enter Address line 2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">

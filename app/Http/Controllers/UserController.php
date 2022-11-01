@@ -254,6 +254,9 @@ class UserController extends Controller
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="staticBackdropLabel">Edit user</h4>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           </div>
           <div class="modal-body">
             <div>
@@ -264,25 +267,25 @@ class UserController extends Controller
                         <input type="text" name ="name" class="form-control" placeholder="Enter Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="'.$user->name.'">
                         <span id="name-error-msg" class="text-danger pl-1"><span>
                     </div>
-                    <div class=" input-group-md mt-3">
+                    <div class=" input-group-md">
                         <b>Email : </b>
                         <input type="email"  name ="email"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="'.$user->email.'">
                         <span id="email-error-msg" class="text-danger pl-1"><span>
                     </div>
 
-                    <div class=" input-group-md mt-3">
+                    <div class="input-group-md">
                         <b>Phone : </b>
                         <input type="text"  name ="phone"   class="form-control" placeholder="Enter Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="'.$user->phone.'">
                     </div>
 
-                    <div class="input-group-md mt-3">
+                    <div class="input-group-md mt-4">
                         <label for="">User Type *</label>
                         <select required name="type" class="form-control">
                             '.$options.'
                         </select>
                     </div>
 
-                    <div class=" input-group-md mt-3">
+                    <div class=" input-group-md mt-4">
                         <b>Password : </b>
                         <input type="password"  name ="password"   class="form-control" placeholder="Enter Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
                     </div>
