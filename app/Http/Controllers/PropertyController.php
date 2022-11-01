@@ -27,7 +27,7 @@ class PropertyController extends Controller
 
         $columns = array(
             0 =>'id',
-            1 =>'property_addres',
+            1 =>'address',
             2 =>'city',
             3 =>'state',
             4 =>'zip_code',
