@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\BidController;
 
 
 /*
@@ -73,7 +72,3 @@ Route::resource('users', UserController::class);
 //Property
 Route::post('/property-data', [App\Http\Controllers\PropertyController::class, 'data'])->name('property-data');
 Route::resource('property', PropertyController::class);
-
-Route::post('/bid-data', [App\Http\Controllers\BidController::class, 'data'])->name('bid-data');
-Route::post('/bid-user', [App\Http\Controllers\BidController::class, 'user'])->name('bid-user');
-Route::resource('bid', BidController::class);

@@ -61,7 +61,7 @@
             "processing": false,
             "serverSide": true,
             "lengthMenu": [ 5, 10, 20, 30, 50 ],
-            "order": [[ 0, "desc" ]],
+            "order": [[ 0, "asc" ]],
 
 
             "ajax":{
