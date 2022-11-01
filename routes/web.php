@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +62,3 @@ Route::get('/market', function () {
     return view('Admin/Market/index');
 });
 
-//Users
-Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
-Route::resource('users', UserController::class);
