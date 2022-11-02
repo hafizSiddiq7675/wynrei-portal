@@ -149,6 +149,7 @@ class UserController extends Controller
             $validator = Validator::make($data, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $request->user_id. ',id',
+                'type' => 'required',
             ]);
 
         }else{
@@ -156,6 +157,7 @@ class UserController extends Controller
             $validator = Validator::make($data, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
+                'type' => 'required',
                 'password' => 'required|confirmed'
             ]);
 
@@ -232,7 +234,7 @@ class UserController extends Controller
         if($user->type == 'REAL STATE AGENT')
         {
             $options = '
-            <option  disabled>Select Type</option>
+            <option  disabled>Select User Type</option>
             <option selected value="REAL STATE AGENT">REAL STATE AGENT</option>
             <option value="INVESTOR">INVESTOR</option>
             ';
@@ -241,9 +243,18 @@ class UserController extends Controller
         if($user->type == 'INVESTOR')
         {
             $options = '
-            <option  disabled>Select Type</option>
+            <option  disabled>Select User Type</option>
             <option value="REAL STATE AGENT">REAL STATE AGENT</option>
             <option selected value="INVESTOR">INVESTOR</option>
+            ';
+        }
+
+        if($user->type == '')
+        {
+            $options = '
+            <option selected disabled>Select User Type</option>
+            <option value="REAL STATE AGENT">REAL STATE AGENT</option>
+            <option  value="INVESTOR">INVESTOR</option>
             ';
         }
 
@@ -283,6 +294,7 @@ class UserController extends Controller
                         <select required name="type" class="form-control">
                             '.$options.'
                         </select>
+                        <span id="type-error-msg-update" class="text-danger pl-1"><span>
                     </div>
 
                     <div class=" input-group-md mt-4">

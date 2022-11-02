@@ -25,6 +25,22 @@
                             <span id="email-error-msg-add" class="text-danger pl-1"><span>
                         </div>
 
+                        <div class=" input-group-md mt-3">
+                            <b>Phone : </b>
+                            <input type="text"  name ="phone"   class="form-control" placeholder="Enter Phone Number" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
+                        </div>
+
+                        <div class="input-group-md mt-3">
+                            <label for="">User Type *</label>
+                            <select required name="type" class="form-control">
+                                <option selected disabled >Select User Type</option>
+                                <option  value="REAL STATE AGENT">REAL STATE AGENT</option>
+                                <option  value="INVESTOR">INVESTOR</option>
+                            </select>
+                            <span id="type-error-msg-add" class="text-danger pl-1"><span>
+
+                        </div>
+
                         <div class=" input-group-md">
                             <b>Password : </b>
                             <input type="password"  name ="password"   class="form-control" placeholder="Enter Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
@@ -72,6 +88,7 @@
                         $('#name-error-msg-add').html('');
                         $('#email-error-msg-add').html('');
                         $('#password-error-msg-add').html('');
+                        $('#type-error-msg-add').html('');
 
                         if(response.success == true)
                         {
@@ -93,6 +110,7 @@
 
 
                             var error = response.data;
+                            alert(error);
 
                             if(error == 'The name field is required.')
                             {
@@ -118,6 +136,11 @@
                             if(error == 'The password confirmation does not match.')
                             {
                                 $('#password-error-msg-add').html(error);
+                            }
+
+                            if(error == 'The type field is required.')
+                            {
+                                $('#type-error-msg-add').html(error);
                             }
 
 
