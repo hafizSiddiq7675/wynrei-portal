@@ -33,11 +33,12 @@ class BidController extends Controller
         $columns = array(
             0 =>'id',
             1 =>'property_address',
-            2 =>'name',
-            3 =>'email',
-            4 =>'phone',
-            5 =>'agree',
-            6 =>'action'
+            2 => 'bid_amount',
+            3 =>'name',
+            4 =>'email',
+            5 =>'phone',
+            6 =>'agree',
+            7 =>'action'
 
         );
 
@@ -71,6 +72,7 @@ class BidController extends Controller
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
                                     ->orWhere('phone', 'LIKE',"%{$search}%")
+                                    ->orWhere('bid_amount', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
@@ -81,6 +83,7 @@ class BidController extends Controller
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
                                     ->orWhere('phone', 'LIKE',"%{$search}%")
+                                    ->orWhere('bid_amount', 'LIKE',"%{$search}%")
                                     ->count();
 
                 }
@@ -101,6 +104,7 @@ class BidController extends Controller
 
                 $nestedData['id'] = $bid->id;
                 $nestedData['property_address'] = $bid->property_address;
+                $nestedData['bid_amount'] = $bid->bid_amount;
                 $nestedData['name'] = $user->name;
                 $nestedData['email'] = $user->email;
                 $nestedData['phone'] = $user->phone;
@@ -165,10 +169,7 @@ class BidController extends Controller
      */
     public function store(Request $request)
     {
-
-        $data = $request->all();
-
-
+            $data = $request->all();
             $validator = Validator::make($data, [
                 'property_address' => 'required',
                 'user_id' => 'required',
@@ -183,19 +184,42 @@ class BidController extends Controller
                 ]);
 
             }
-            $bid = new Bid();
-            $bid->property_address = $request->property_address;
-            $bid->user_id = $request->user_id;
-            $bid->bid_amount = $request->bid_amount;
-            $bid->agree = $request->agree;
-
-            $bid->save();
 
 
-            return response()->json([
-                'success' => true,
-                'data'  => 'Bid Created Successfuly'
-            ]);
+            if($request->bid_id != '')
+            {
+                $bid =  Bid::where('id', $request->bid_id)->first();
+                $bid->property_address = $request->property_address;
+                $bid->user_id = $request->user_id;
+                $bid->bid_amount = $request->bid_amount;
+                $bid->agree = $request->agree;
+
+                $bid->save();
+
+                return response()->json([
+                    'success' => true,
+                    'data'  => 'Bid Updated Successfuly'
+                ]);
+
+            }else{
+                $bid = new Bid();
+                $bid->property_address = $request->property_address;
+                $bid->user_id = $request->user_id;
+                $bid->bid_amount = $request->bid_amount;
+                $bid->agree = $request->agree;
+
+                $bid->save();
+
+
+                return response()->json([
+                    'success' => true,
+                    'data'  => 'Bid Created Successfuly'
+                ]);
+
+            }
+
+
+
 
 
     }
@@ -220,6 +244,14 @@ class BidController extends Controller
     public function edit($id)
     {
         $bid = Bid::where('id', $id)->first();
+        $users = User::all();
+        $properties = Property::all();
+
+        $checked = '';
+        if($bid->agree == '1')
+        {
+            $checked = 'checked';
+        }
 
         $html = '
 
@@ -236,22 +268,39 @@ class BidController extends Controller
                       <div class="">
                           <label for="">Property Address *</label>
                           <select required name="property_address" class="form-select form-control" aria-label="Default select example">
-                              <option selected disabled>Select property </option>
-                              @foreach ($properties as $property)
-                                  <option value="{{ $property->property_addres }}">{{ $property->property_addres }}</option>
-                              @endforeach
-                            </select>
+                              <option selected disabled>Select property </option>';
+                              foreach ($properties as $property)
+                              {
+                                $selected = '';
+                                if($property->property_addres == $bid->property_address)
+                                {
+                                    $selected = 'selected';
+                                }
+                                $html .= ' <option '.$selected.' value="'. $property->property_addres .'">'. $property->property_addres .'</option>';
+                              }
+
+
+                            $html .='</select>
                             <span id="property-error-msg-update" class="text-danger pl-1"><span>
                         </div>
 
                         <div class="mt-1">
                           <b for="">User *</b>
                           <select required name="user_id" class="form-select form-control user_id" aria-label="Default select example">
-                              <option selected disabled>Select property </option>
-                              @foreach ($users as $user)
-                                  <option value="{{ $user->id }}">{{ $user->name }}</option>
-                              @endforeach
-                            </select>
+                              <option selected disabled>Select property </option>';
+                              foreach ($users as $user)
+                              {
+                                $selected = '';
+                                if($user->id == $bid->user_id)
+                                {
+                                    $selected = 'selected';
+                                }
+
+                                $html .= '<option '.$selected.' value="'. $user->id .'">'. $user->name .'</option>';
+                              }
+
+
+                            $html .= '</select>
                             <span id="user-error-msg-update" class="text-danger pl-1"><span>
 
                         </div>
@@ -265,7 +314,7 @@ class BidController extends Controller
 
                         <!-- Default checkbox -->
                       <div class="form-check input-group-md mt-3">
-                          <input class="form-check-input" name="agree" type="checkbox" value="1" id="flexCheckDefault" />
+                          <input class="form-check-input" '.$checked.' name="agree" type="checkbox" value="1" id="flexCheckDefault" />
                           <label class="form-check-label" for="flexCheckDefault">I agree to the terms of service and terms of bidding on WynREI.com. This offer is not final and accepted until accepted by Seller. Once accepted, this offer becomes binding.</label>
                       </div>
 
@@ -306,6 +355,7 @@ class BidController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bid = Bid::where('id', $id)->delete();
+        return true;
     }
 }

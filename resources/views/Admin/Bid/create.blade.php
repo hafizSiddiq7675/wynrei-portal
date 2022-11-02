@@ -79,12 +79,15 @@
            processData: false,
            success: (response) => {
 
+            $('#user-error-msg-add').html('');
+            $('#property-error-msg-add').html('');
+            $('#bid-error-msg-add').html('');
 
             if(response.success == true)
                 {
 
                     swal({
-                        title: "Updated",
+                        title: "Added",
                         text: response.data,
                         icon: "success",
                         button: "OK!",
@@ -97,7 +100,7 @@
                 }else{
                     var error = response.data;
 
-                    alert(error);
+
                     if(error == 'The property address field is required.')
                     {
 

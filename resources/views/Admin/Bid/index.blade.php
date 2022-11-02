@@ -10,6 +10,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Property Address</th>
+                <th scope="col">Bid Amount</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
@@ -75,6 +76,7 @@ var table =  $('#bid-data-table').DataTable({
 
         { "data": "id" },
         { "data": "property_address" },
+        { "data": "bid_amount" },
         { "data": "name" },
         { "data": "email" },
         { "data": "phone" },
@@ -85,6 +87,55 @@ var table =  $('#bid-data-table').DataTable({
 });
 
 });
+
+
+
+
+        $(document).on('click', '.delete-bid', function(){
+            var id = $(this).data('id');
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+
+                var url = "{{ route('bid.destroy',':id') }}";
+                url = url.replace(':id', id);
+
+                var token = "{{ csrf_token() }}";
+
+                $.ajax({
+                    type: 'Delete',
+                        url: url,
+                        data: {'_token': token, '_method': 'DELETE'},
+                        success: function (response) {
+
+                            $('#bid-data-table').DataTable().ajax.reload();
+                            swal("Poof! Bid has been deleted!", {
+                                icon: "success",
+                                timer: 1000,
+                            });
+                        }
+                });
+
+
+
+
+                } else {
+                    swal("Your Bid is safe!");
+                }
+            });
+
+
+
+
+
+        });
 
   </script>
 @endsection
