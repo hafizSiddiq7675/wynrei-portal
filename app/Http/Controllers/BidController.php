@@ -8,6 +8,7 @@ use App\Models\User;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class BidController extends Controller
 {
@@ -16,8 +17,16 @@ class BidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index()
     {
+
         $properties = Property::all();
         $users = User::all();
         return view('Admin.Bid.index', compact('properties', 'users'));
@@ -65,7 +74,7 @@ class BidController extends Controller
                 else {
                     $search = $request->input('search.value');
 
-                    
+
 
                     $bids = Bid::where('id','LIKE',"%{$search}%")
                         ->orWhere('property_address', 'LIKE',"%{$search}%")

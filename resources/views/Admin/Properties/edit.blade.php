@@ -24,7 +24,7 @@
                 url: url,
                 data: {'_token': token, '_method': 'GET'},
                 success: function (response) {
-                    
+
                     $('#update-property-box').html(response);
                     $('#updatePropertyModal').modal('show');
 
@@ -128,7 +128,8 @@
            contentType: false,
            processData: false,
            success: (response) => {
-
+            $('#property-error-msg-update').html('');
+            $('#market-error-msg-update').html('');
 
             if(response.success == true)
                 {
@@ -144,8 +145,15 @@
 
                 }else{
                     var error = response.data;
-                    // alert(error)
-                    // $('#setting_key_error').html(error);
+                    if(error == 'The market id field is required.')
+                    {
+                        $('#market-error-msg-update').html(error);
+                    }
+
+                    if(error == 'The property type field is required.')
+                    {
+                        $('#property-error-msg-update').html(error);
+                    }
                 }
            }
        });

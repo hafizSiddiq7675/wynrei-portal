@@ -19,7 +19,7 @@ use App\Http\Controllers\MarketController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -47,6 +47,10 @@ Route::get('/test', function () {
   echo ini_get('memory_limit');
 });
 
+Route::get('/forget', function () {
+    return view('auth_old/email');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -65,6 +69,14 @@ Route::get('/bid', function () {
 
 Route::get('/market', function () {
     return view('Admin/Market/index');
+});
+
+Route::get('/settings', function () {
+    return view('Admin.setting');
+});
+
+Route::get('/support', function () {
+    return view('Admin.support');
 });
 
 //Users

@@ -42,21 +42,46 @@
       {{-- <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li> --}}
+      @php
+            use App\Libraries\Helper;
+            $user =  auth::user();
+            $role = Helper::role($user);
+      @endphp
+
+
+
       <li class="nav-item toggel-buuton">
         <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i class="fas fa-bars"></i></a>
       </li>
+      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block" style="margin-left: -30px;">
         <a href="/user" class="nav-link">User</a>
       </li>
+      @endif
+
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/property" class="nav-link">Property</a>
       </li>
+      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/market" class="nav-link">Market</a>
       </li>
+      @endif
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/bid" class="nav-link">Bid</a>
       </li>
+
+      <li class="nav-item d-none d-sm-inline-block ml-3">
+        <a href="/support" class="nav-link">Support</a>
+      </li>
+
+      <li class="nav-item d-none d-sm-inline-block ml-3">
+        <a href="/settings" class="nav-link">Settings</a>
+      </li>
+
+
+
+
     </ul>
 
     <!-- Right navbar links -->
