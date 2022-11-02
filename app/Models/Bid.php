@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Bid extends Model
 {
     use HasFactory, SoftDeletes;
+
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
