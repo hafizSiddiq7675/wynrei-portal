@@ -11902,7 +11902,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   animation-duration: 0s !important;
 }
 
-.dark-mode {
+body.dark-mode {
   background-color: #454d55 !important;
   color: #fff;
 }
