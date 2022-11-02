@@ -94,6 +94,22 @@
         </div>
 
       </li>
+
+
+      <li class="nav-item dropdown open" style="padding-left: 15px;">
+        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+          <img src="{{ asset('AdminLTE-master/images/user.png') }}" alt="" height="30px;" width="30px;">{{ auth::user()->name }}
+        </a>
+        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+
+          <a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa fa-sign-out pull-right"></i> Log Out
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </a>
+        </div>
+      </li>
     </ul>
   </nav>
 
