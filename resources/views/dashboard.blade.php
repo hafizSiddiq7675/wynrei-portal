@@ -92,7 +92,23 @@
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onclick="toggleTheme()" />
           <label class="form-check-label" for="flexSwitchCheckChecked">Dark Mode</label>
         </div>
-        
+
+      </li>
+
+
+      <li class="nav-item dropdown open" style="padding-left: 15px;">
+        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+          <img src="{{ asset('AdminLTE-master/images/user.png') }}" alt="" height="30px;" width="30px;">{{ auth::user()->name }}
+        </a>
+        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+
+          <a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa fa-sign-out pull-right"></i> Log Out
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </a>
+        </div>
       </li>
     </ul>
   </nav>
@@ -111,7 +127,7 @@
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-industry"></i>
-          <a class="nav-link-mobile ml-2" href="/market">Market</a>
+          <a class="nav-link-mobile ml-2" href="{{ route('market.index') }}">Market</a>
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-building"></i>

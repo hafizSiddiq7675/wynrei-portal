@@ -65,26 +65,44 @@ class BidController extends Controller
                 else {
                     $search = $request->input('search.value');
 
+                    
+
+                    $bids = Bid::where('id','LIKE',"%{$search}%")
+                        ->orWhere('property_address', 'LIKE',"%{$search}%")
+                        ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                        ->orWhere('agree', 'LIKE',"%{$search}%")
+                        ->orWhereHas(
+                            'user',
+                            function ($q) use ($search) {
+                                $q->where('name', 'LIKE',"%{$search}%")
+                                ->orWhere('email', 'LIKE',"%{$search}%")
+                                ->orWhere('phone', 'LIKE',"%{$search}%");
+
+                            }
+                        )
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                    ->get();
+
+                    $totalFiltered = Bid::where('id','LIKE',"%{$search}%")
+                        ->orWhere('property_address', 'LIKE',"%{$search}%")
+                        ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                        ->orWhere('agree', 'LIKE',"%{$search}%")
+                        ->orWhereHas(
+                            'user',
+                            function ($q) use ($search) {
+                                $q->where('name', 'LIKE',"%{$search}%")
+                                ->orWhere('email', 'LIKE',"%{$search}%")
+                                ->orWhere('phone', 'LIKE',"%{$search}%");
+
+                            }
+                        )
+                    ->count();
 
 
-                        $bids =  Bid::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('property_address', 'LIKE',"%{$search}%")
-                                    ->orWhere('name', 'LIKE',"%{$search}%")
-                                    ->orWhere('email', 'LIKE',"%{$search}%")
-                                    ->orWhere('phone', 'LIKE',"%{$search}%")
-                                    ->orWhere('bid_amount', 'LIKE',"%{$search}%")
-                                    ->offset($start)
-                                    ->limit($limit)
-                                    ->orderBy($order,$dir)
-                                    ->get();
 
-                        $totalFiltered = Bid::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('property_address', 'LIKE',"%{$search}%")
-                                    ->orWhere('name', 'LIKE',"%{$search}%")
-                                    ->orWhere('email', 'LIKE',"%{$search}%")
-                                    ->orWhere('phone', 'LIKE',"%{$search}%")
-                                    ->orWhere('bid_amount', 'LIKE',"%{$search}%")
-                                    ->count();
+
 
                 }
 
@@ -258,12 +276,12 @@ class BidController extends Controller
         <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="staticBackdropLabel">Add Bid</h4>
+            <h4 class="modal-title" id="staticBackdropLabel">Update Bid</h4>
           </div>
           <div class="modal-body">
             <div>
 
-              <input type="text" name="bid_id" id="" value="'.$bid->id.'" class="form-control" placeholder="Enter Phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
+              <input type="hidden" name="bid_id" id="" value="'.$bid->id.'" class="form-control" placeholder="Enter Phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
                   <div class="mt-4 mb-4">
                       <div class="">
                           <label for="">Property Address *</label>
@@ -324,7 +342,7 @@ class BidController extends Controller
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-md">Add Bid</button>
+            <button type="submit" class="btn btn-primary btn-md">Update</button>
           </div>
         </div>
       </div>

@@ -382,7 +382,7 @@ class PropertyController extends Controller
                   <div class=" mb-4">
 
                       <div class="row">
-                            <input type="text" value="'.$property->id.'" name="property_id" required class="form-control" placeholder="Enter Property Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            <input type="hidden" value="'.$property->id.'" name="property_id" required class="form-control" placeholder="Enter Property Address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 
                           <div class="col-6 mt-3">
                               <div class=" input-group-md">

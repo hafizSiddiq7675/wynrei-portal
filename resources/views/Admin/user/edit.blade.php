@@ -12,7 +12,7 @@
   <script>
     $(document).on('click', '.edit-user', function(){
         var id = $(this).data('id');
-    
+
 
 
         var url = "{{ route('users.edit',':id') }}";
@@ -55,6 +55,7 @@
             {
                 $('#name-error-msg').html('');
                 $('#email-error-msg').html('');
+                $('#type-error-msg-update').html('');
                 // console.log(response);
                 // alert(response);
                 if(response.success == true)
@@ -86,6 +87,11 @@
                     if(error == 'The email has already been taken.')
                     {
                         $('#email-error-msg').html(error);
+                    }
+
+                    if(error == 'The type field is required.')
+                    {
+                        $('#type-error-msg-update').html(error);
                     }
 
 
