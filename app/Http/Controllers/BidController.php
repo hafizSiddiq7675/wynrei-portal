@@ -16,6 +16,13 @@ class BidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    
     public function index()
     {
         $properties = Property::all();
@@ -65,7 +72,7 @@ class BidController extends Controller
                 else {
                     $search = $request->input('search.value');
 
-                    
+
 
                     $bids = Bid::where('id','LIKE',"%{$search}%")
                         ->orWhere('property_address', 'LIKE',"%{$search}%")

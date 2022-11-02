@@ -39,6 +39,7 @@
 
 @include('Admin.Properties.create')
 @include('Admin.Properties.edit')
+@include('Admin.Properties.view')
 
 
 

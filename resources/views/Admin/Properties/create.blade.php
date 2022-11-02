@@ -161,24 +161,42 @@
 
                         <div class="col-6">
                             <div class="input-group-md mt-3">
+                                <label for="">Year Built *</label>
+                                <input type="number" name="year_built" required class="form-control" placeholder="Enter Year Built" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="input-group-md mt-3">
                                 <label for="">Property Type *</label>
-                                <select required name="property_type" class="form-control">
+                                <select required name="property_type" class="form-select form-control">
                                     <option selected disabled>Select Property</option>
                                     <option value="Single-family">Single-family</option>
                                     <option value="Multi-family">Multi-family</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Industrial">Industrial</option>
                                 </select>
+                                <span id="property-error-msg-add" class="text-danger pl-1"><span>
+
                             </div>
                         </div>
-
 
                         <div class="col-6">
                             <div class="input-group-md mt-3">
-                                <label for="">Year Built *</label>
-                                <input type="number" name="year_built" required class="form-control" placeholder="Enter Year Built" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                <label for="">Market *</label>
+                                <select required name="market_id" class="form-control form-select">
+                                    <option selected disabled>Select Market</option>
+                                    @foreach ($markets as $market)
+                                    <option value="{{ $market->id }}">{{ $market->name }}</option>
+                                    @endforeach
+
+
+                                </select>
+                                <span id="market-error-msg-add" class="text-danger pl-1"><span>
+
                             </div>
                         </div>
+
 
 
                     </div>
@@ -275,6 +293,7 @@
     $('#add-property-from').submit(function(e) {
        e.preventDefault();
 
+
        var formData = new FormData(this);
 
        $.ajax({
@@ -285,7 +304,9 @@
            processData: false,
            success: (response) => {
 
-        
+            $('#property-error-msg-add').html('');
+            $('#market-error-msg-add').html('');
+
             if(response.success == true)
                 {
                     swal({
@@ -300,8 +321,17 @@
                     $('#property-data-table').DataTable().ajax.reload();
 
                 }else{
-                    // var error = response.data;
-                    // $('#setting_key_error').html(error);
+                    var error = response.data;
+
+                    if(error == 'The market id field is required.')
+                    {
+                        $('#market-error-msg-add').html(error);
+                    }
+
+                    if(error == 'The property type field is required.')
+                    {
+                        $('#property-error-msg-add').html(error);
+                    }
                 }
            }
        });
