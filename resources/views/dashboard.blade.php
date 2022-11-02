@@ -112,7 +112,7 @@
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-comment-dollar"></i>
-          <a class="nav-link-mobile ml-2" href="/bid">Bid</a>
+          <a class="nav-link-mobile ml-2" href="{{ route('bid.index') }}">Bid</a>
         </li>
       </ul>
     </div>
@@ -120,7 +120,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
- 
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="ml-4 mr-4">
