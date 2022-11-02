@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\MarketController;
 
 
 /*
@@ -76,5 +77,9 @@ Route::resource('property', PropertyController::class);
 
 ////Bid
 Route::post('/bid-data', [App\Http\Controllers\BidController::class, 'data'])->name('bid-data');
-Route::post('/bid-user', [App\Http\Controllers\BidController::class, 'user'])->name('bid-user');
 Route::resource('bid', BidController::class);
+
+
+////Market
+Route::post('/market-data', [App\Http\Controllers\MarketController::class, 'data'])->name('market-data');
+Route::resource('market', MarketController::class);

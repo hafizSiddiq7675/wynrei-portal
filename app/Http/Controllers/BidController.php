@@ -258,12 +258,12 @@ class BidController extends Controller
         <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="staticBackdropLabel">Add Bid</h4>
+            <h4 class="modal-title" id="staticBackdropLabel">Update Bid</h4>
           </div>
           <div class="modal-body">
             <div>
 
-              <input type="text" name="bid_id" id="" value="'.$bid->id.'" class="form-control" placeholder="Enter Phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
+              <input type="hidden" name="bid_id" id="" value="'.$bid->id.'" class="form-control" placeholder="Enter Phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
                   <div class="mt-4 mb-4">
                       <div class="">
                           <label for="">Property Address *</label>
@@ -324,7 +324,7 @@ class BidController extends Controller
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-md">Add Bid</button>
+            <button type="submit" class="btn btn-primary btn-md">Update</button>
           </div>
         </div>
       </div>

@@ -92,7 +92,7 @@
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onclick="toggleTheme()" />
           <label class="form-check-label" for="flexSwitchCheckChecked">Dark Mode</label>
         </div>
-        
+
       </li>
     </ul>
   </nav>
@@ -111,7 +111,7 @@
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-industry"></i>
-          <a class="nav-link-mobile ml-2" href="/market">Market</a>
+          <a class="nav-link-mobile ml-2" href="{{ route('market.index') }}">Market</a>
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-building"></i>

@@ -53,7 +53,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary btn-md">Add Bid</button>
+          <button type="submit" class="btn btn-primary btn-md">Add </button>
         </div>
       </div>
     </div>

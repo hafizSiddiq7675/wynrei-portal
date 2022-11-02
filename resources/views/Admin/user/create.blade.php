@@ -52,7 +52,7 @@
 
 <script>
 
-    $(document).on( 'click' ,'#user-add-btn', function (e) {
+            $(document).on( 'click' ,'#user-add-btn', function (e) {
                 e.preventDefault();
 
                 $.ajaxSetup({
