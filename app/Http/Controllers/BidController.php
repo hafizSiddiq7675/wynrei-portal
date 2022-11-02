@@ -8,6 +8,7 @@ use App\Models\User;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class BidController extends Controller
 {
@@ -22,9 +23,10 @@ class BidController extends Controller
         $this->middleware('auth');
     }
 
-    
+
     public function index()
     {
+
         $properties = Property::all();
         $users = User::all();
         return view('Admin.Bid.index', compact('properties', 'users'));

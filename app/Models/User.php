@@ -46,7 +46,27 @@ class User extends Authenticatable
 
     public function bids()
     {
-    
+
         return $this->hasMany(Bid::class, 'user_id');
+    }
+
+
+    public function roles()
+    {
+
+        return $this->belongsToMany(Role::class, 'user_roles');
+
+    }
+
+
+    public function hasRole($role)
+    {
+
+       if ($exist = $this->roles->where('name', '=', $role)->first()) {
+        return true;
+       }
+       return false;
+
+
     }
 }

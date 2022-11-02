@@ -18,6 +18,9 @@ class UserSeeder extends Seeder
     public function run()
     {
         try {
+
+            User::truncate();
+
             $user = new User();
             $user->name = "Super Admin";
             $user->email = "s@gmail.com";
@@ -26,6 +29,28 @@ class UserSeeder extends Seeder
             $user->password = Hash::make('password');
             $user->email_verified_at = Carbon::now()->toDateTimeString();
             $user->save();
+
+
+            $user = new User();
+            $user->name = "Investor";
+            $user->email = "investor@gmail.com";
+            $user->type = "INVESTOR";
+            $user->phone = "123456789";
+            $user->password = Hash::make('password');
+            $user->email_verified_at = Carbon::now()->toDateTimeString();
+            $user->save();
+
+
+            $user = new User();
+            $user->name = "Agent";
+            $user->email = "agent@gmail.com";
+            $user->type = "INVESTOR";
+            $user->phone = "123456789";
+            $user->password = Hash::make('password');
+            $user->email_verified_at = Carbon::now()->toDateTimeString();
+            $user->save();
+
+
 
         } catch (Exception $e) {
 
