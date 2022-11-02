@@ -62,7 +62,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto mr-4">
       <!-- Navbar Search -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -81,11 +81,18 @@
             </div>
           </form>
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
+      </li> --}}
+      {{-- <li class="nav-item">
+        <a class="nav-link"  data-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i> DarkMode
         </a>
+      </li> --}}
+      <li>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onclick="toggleTheme()" />
+          <label class="form-check-label" for="flexSwitchCheckChecked">Dark Mode</label>
+        </div>
+        
       </li>
     </ul>
   </nav>
@@ -416,6 +423,12 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+
+<script>
+  function toggleTheme(){
+  document.body.classList.toggle('dark-mode');
+}
+</script>
 
 <!-- jQuery -->
 <script src="{{asset('AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
