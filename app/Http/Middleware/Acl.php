@@ -37,7 +37,7 @@ class Acl
         {
             // return $next($request);
             $controllerAction = class_basename(Route::currentRouteAction());
-            // echo '<pre>'; print_r($controllerAction); exit;
+// echo '<pre>'; print_r($controllerAction); exit;
 
             if(strpos($controllerAction, 'data'))
             {
@@ -54,6 +54,28 @@ class Acl
             {
                 return $next($request);
             }
+
+            if( $controllerAction == 'PropertyController@store')
+            {
+                return $next($request);
+
+            }
+
+
+            ////Bid
+
+            if( $controllerAction == 'BidController@index')
+            {
+                return $next($request);
+
+            }
+
+            if( $controllerAction == 'BidController@status')
+            {
+                return $next($request);
+
+            }
+
             return abort(403);
         }
     }

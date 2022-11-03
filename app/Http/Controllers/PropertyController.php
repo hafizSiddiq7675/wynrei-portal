@@ -11,6 +11,7 @@ use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Acl;
+use App\Libraries\Helper;
 
 class PropertyController extends Controller
 {
@@ -108,16 +109,33 @@ class PropertyController extends Controller
                 $nestedData['state'] = $property->state;
                 $nestedData['zip_code'] = $property->zip_code;
 
+                $user =  auth::user();
+                $role = Helper::role($user);
+                if($role == 'SuperAdmin')
+                {
+                    $nestedData['action'] = '
+                        <td class="button-action">
+                            <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
+                            <a href="javascript:0" class="btn btn-sm btn-warning  edit-property" data-id='.$property->id.'  data-toggle="modal" data-target="">Edit</a>
+                            <a href="javascript:0" class="btn btn-sm btn-danger delete-property" data-id='.$property->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        </td>
+                    ';
+                }
+
+
+                if($role == 'Agent')
+                {
+                    $nestedData['action'] = '
+                        <td class="button-action">
+                            <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
+                        </td>
+                    ';
+                }
 
 
 
-                $nestedData['action'] = '
 
-                <td class="button-action">
-                    <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
-                    <a href="javascript:0" class="btn btn-sm btn-warning  edit-property" data-id='.$property->id.'  data-toggle="modal" data-target="">Edit</a>
-                    <a href="javascript:0" class="btn btn-sm btn-danger delete-property" data-id='.$property->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
-                </td>';
+
 
                 $data[] = $nestedData;
 
