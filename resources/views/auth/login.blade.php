@@ -51,8 +51,7 @@
                             Forgot your Password?</a>
                         </div>
                         @endif
-                        <div class="text-priamry auth-anker"><a href="{{ route('register') }}">
-                            Register</a></div>
+                        
                       </div>
                       <div class="text-center text-muted">
                         © 2022 All Rights Reserved. WYNREI Portal -

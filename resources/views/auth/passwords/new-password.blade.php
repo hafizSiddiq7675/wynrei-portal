@@ -18,31 +18,24 @@
                <h4 class="mt-4 text-center">
                 Reset <span class="text-primary">Password</span>
                </h4>
-               <form method="POST" action="{{ route('password.email') }}">
-                    @csrf
+               <form action="">
                 <div class="mt-5">
                     <div class=" input-group-md">
-                        <input type="email" name="email" required class="form-control" placeholder="Enter Your Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" value="{{ old('email') }}" autofocus>
-                        @error('email')
-                            <span class="text-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <input type="password" required class="form-control" placeholder="Enter Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                       </div>
-                      <div  class="mt-4">
-                        <button type="submit" class="btn btn-primary w-100">
+                      <div class=" input-group-md mt-3">
+                        <input type="password" required class="form-control" placeholder="Confirm Your Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                      </div>
+                      <div class="mt-4">
+                        <button class="btn btn-primary w-100">
                             Submit
                         </button>
-
                       </div>
-                      <div class="d-flex justify-content-center mt-2 mb-4">
-                        <center>
-                            <div class="text-primary auth-anker"><a href="/login">
-                                Login</a>
-                            </div>
-                        </center>
-
-
+                      <div class="d-flex justify-content-between mt-2 mb-4">
+                        <div class="text-primary auth-anker"><a href="/login">
+                            Login</a></div>
+                        <div class="text-priamry auth-anker"><a href="/signup">
+                            Register</a></div>
                       </div>
                       <div class="text-center text-muted">
                         © 2022 All Rights Reserved. WYNREI Portal -

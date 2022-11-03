@@ -39,7 +39,7 @@ Route::get('/forget', function () {
 });
 
 Route::get('/new-password', function () {
-    return view('auth/newpassword');
+    return view('auth_old/newpassword');
 });
 
 Route::get('/test', function () {
@@ -51,7 +51,8 @@ Route::get('/forget', function () {
     return view('auth_old/email');
 });
 
-Auth::routes();
+// Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -81,6 +82,7 @@ Route::get('/support', function () {
 
 //Users
 Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
+Route::get('/create/password/{email}/{token}', [App\Http\Controllers\UserController::class, 'createPassword']);
 Route::resource('users', UserController::class);
 
 //Property
