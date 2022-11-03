@@ -88,6 +88,7 @@ Route::post('/property-data', [App\Http\Controllers\PropertyController::class, '
 Route::resource('property', PropertyController::class);
 
 ////Bid
+Route::post('/bid-status', [App\Http\Controllers\BidController::class, 'status'])->name('bid-status');
 Route::post('/bid-data', [App\Http\Controllers\BidController::class, 'data'])->name('bid-data');
 Route::resource('bid', BidController::class);
 

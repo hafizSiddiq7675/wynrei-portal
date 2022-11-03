@@ -25,7 +25,7 @@
                 url: url,
                 data: {'_token': token, '_method': 'GET'},
                 success: function (response) {
-                        // alert(response);
+                      
                     $('#edit-user').html(response);
                     $('#editusermodal').modal('show');
 
@@ -57,10 +57,10 @@
                 $('#email-error-msg').html('');
                 $('#type-error-msg-update').html('');
                 // console.log(response);
-                // alert(response);
+
                 if(response.success == true)
                 {
-                    // alert('done')
+
                     swal({
                         title: "Updated",
                         text: response.data,
@@ -73,6 +73,7 @@
                 }else{
 
                     var error = response.data;
+
 
                     if(error == 'The name field is required.')
                     {
@@ -89,9 +90,9 @@
                         $('#email-error-msg').html(error);
                     }
 
-                    if(error == 'The type field is required.')
+                    if(error == 'The role id field is required.')
                     {
-                        $('#type-error-msg-update').html(error);
+                        $('#role-error-msg-update').html('The user role  field is required.');
                     }
 
 

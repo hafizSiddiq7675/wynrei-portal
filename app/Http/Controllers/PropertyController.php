@@ -8,7 +8,9 @@ use App\Models\Photo;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Facade\FlareClient\Stacktrace\File;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Middleware\Acl;
 
 class PropertyController extends Controller
 {
@@ -21,11 +23,13 @@ class PropertyController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(Acl::class);
     }
 
-    
+
     public function index()
     {
+
         $markets = Market::all();
         return view('Admin.Properties.index', compact('markets'));
     }
@@ -169,6 +173,7 @@ class PropertyController extends Controller
         if($request->property_id != '')
         {
             $property = Property::where('id', $request->property_id)->first();
+            $property->user_id = auth::user()->id;
             $property->property_addres = $request->property_addres;
             $property->address_line_2 = $request->address_line_2;
             $property->city = $request->city;
@@ -248,6 +253,7 @@ class PropertyController extends Controller
         }else{
 
             $property = new Property();
+            $property->user_id = auth::user()->id;
             $property->property_addres = $request->property_addres;
             $property->address_line_2 = $request->address_line_2;
             $property->city = $request->city;

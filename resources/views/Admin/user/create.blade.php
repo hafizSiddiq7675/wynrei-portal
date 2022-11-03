@@ -31,13 +31,16 @@
                         </div>
 
                         <div class="input-group-md mt-3">
-                            <label for="">User Type *</label>
-                            <select required name="type" class="form-control">
+                            <label for="">User Role *</label>
+                            <select required name="role_id" class="form-control">
                                 <option selected disabled >Select User Type</option>
-                                <option  value="REAL STATE AGENT">REAL STATE AGENT</option>
-                                <option  value="INVESTOR">INVESTOR</option>
+                                @foreach ($roles as $role)
+                                <option  value="{{ $role->id }}">{{ $role->role }}</option>
+                                @endforeach
+                                {{-- <option  value="REAL STATE AGENT">REAL STATE AGENT</option>
+                                <option  value="INVESTOR">INVESTOR</option> --}}
                             </select>
-                            <span id="type-error-msg-add" class="text-danger pl-1"><span>
+                            <span id="role-error-msg-add" class="text-danger pl-1"><span>
 
                         </div>
 
@@ -85,10 +88,12 @@
 
                     success: function(response)
                     {
+
+
                         $('#name-error-msg-add').html('');
                         $('#email-error-msg-add').html('');
                         $('#password-error-msg-add').html('');
-                        $('#type-error-msg-add').html('');
+                        $('#role-error-msg-add').html('');
 
                         if(response.success == true)
                         {
@@ -110,7 +115,7 @@
 
 
                             var error = response.data;
-                            alert(error);
+                           
 
                             if(error == 'The name field is required.')
                             {
@@ -138,9 +143,9 @@
                                 $('#password-error-msg-add').html(error);
                             }
 
-                            if(error == 'The type field is required.')
+                            if(error == 'The role id field is required.')
                             {
-                                $('#type-error-msg-add').html(error);
+                                $('#role-error-msg-add').html('The user role field is required.');
                             }
 
 

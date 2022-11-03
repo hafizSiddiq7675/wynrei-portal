@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Market;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserMarket;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Libraries\Helper;
+use App\Models\UserRole;
 
 class UserController extends Controller
 {
@@ -21,10 +26,12 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    
+
     public function index()
     {
-        return view('Admin.user.index');
+
+        $roles = Role::all();
+        return view('Admin.user.index', compact('roles'));
     }
 
     /**
@@ -150,13 +157,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
+        // echo '<pre>'; print_r($request->all()); exit;
         $data = $request->all();
         if($request->user_id != '')
         {
             $validator = Validator::make($data, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $request->user_id. ',id',
-                'type' => 'required',
+                'role_id' => 'required',
             ]);
 
         }else{
@@ -164,7 +172,7 @@ class UserController extends Controller
             $validator = Validator::make($data, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'type' => 'required',
+                'role_id' => 'required',
                 'password' => 'required|confirmed'
             ]);
 
@@ -179,18 +187,54 @@ class UserController extends Controller
 
         }
 
+
         if($request->user_id != '')
         {
            $user = User::where('id', $request->user_id)->first();
            $user->name = $request->name;
            $user->email = $request->email;
-           $user->type = $request->type;
            $user->phone = $request->phone;
            if(isset($request->password))
            {
             $user->password = Hash::make($request->password);
            }
            $user->save();
+
+
+           ////User Role
+           $user_role = UserRole::where('user_id', $user->id)->first();
+           $user_role->user_id = $user->id;
+           $user_role->role_id = $request->role_id;
+           $user_role->save();
+
+
+
+           ////Markets
+           if(isset($request->market_id))
+           {
+                $role = Role::where('id', $request->role_id)->first();
+                if($role->role == 'Buyer')
+                {
+                    $markets = Market::all();
+
+                    $old_markets = UserMarket::where('user_id', $user->id)->exists();
+                    if($old_markets)
+                    {
+                        UserMarket::where('user_id', $user->id)->delete();
+                    }
+
+                    foreach($request->market_id as $market)
+                    {
+                        $user_market = new UserMarket();
+                        $user_market->user_id = $user->id;
+                        $user_market->market_id = $market;
+
+                        $user_market->save();
+
+                    }
+                }
+           }
+
 
 
 
@@ -201,12 +245,41 @@ class UserController extends Controller
 
 
         }else{
+
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->phone = $request->phone;
             $user->password = Hash::make($request->password);
 
             $user->save();
+
+
+            ////User Role
+            $user_role = new UserRole();
+            $user_role->user_id = $user->id;
+            $user_role->role_id = $request->role_id;
+            $user_role->save();
+
+
+            ////Markets
+            $role = Role::where('id', $request->role_id)->first();
+            if($role->role == 'Buyer')
+            {
+                $markets = Market::all();
+
+                foreach($markets as $market)
+                {
+                    $user_market = new UserMarket();
+                    $user_market->user_id = $user->id;
+                    $user_market->market_id = $market->id;
+
+                    $user_market->save();
+
+                }
+            }
+
+
 
 
             return response()->json([
@@ -237,33 +310,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->first();
+        $markets = Market::all();
+        $roles = Role::all();
 
-        if($user->type == 'REAL STATE AGENT')
-        {
-            $options = '
-            <option  disabled>Select User Type</option>
-            <option selected value="REAL STATE AGENT">REAL STATE AGENT</option>
-            <option value="INVESTOR">INVESTOR</option>
-            ';
-        }
 
-        if($user->type == 'INVESTOR')
-        {
-            $options = '
-            <option  disabled>Select User Type</option>
-            <option value="REAL STATE AGENT">REAL STATE AGENT</option>
-            <option selected value="INVESTOR">INVESTOR</option>
-            ';
-        }
-
-        if($user->type == '')
-        {
-            $options = '
-            <option selected disabled>Select User Type</option>
-            <option value="REAL STATE AGENT">REAL STATE AGENT</option>
-            <option  value="INVESTOR">INVESTOR</option>
-            ';
-        }
 
 
         $html = '
@@ -297,14 +347,52 @@ class UserController extends Controller
                     </div>
 
                     <div class="input-group-md mt-4">
-                        <label for="">User Type *</label>
-                        <select required name="type" class="form-control">
-                            '.$options.'
-                        </select>
-                        <span id="type-error-msg-update" class="text-danger pl-1"><span>
-                    </div>
+                        <label for="">User Role *</label>
+                        <select required name="role_id" class="form-control form-select">
+                        <option  disabled>Select User Role</option>';
 
-                    <div class=" input-group-md mt-4">
+                        $user_role = Helper::checkRole($user);
+                        foreach($roles as $role)
+                        {
+                            $selected = '';
+
+                            if($user_role->id == $role->id)
+                            {
+                                $selected = 'selected';
+                            }
+                            $html .= '<option '.$selected.' value="'.$role->id.'">'.$role->role.'</option>';
+                        }
+
+                        $html .= '</select>
+                        <span id="role-error-msg-update" class="text-danger pl-1"><span>
+                    </div>';
+
+                    if($user_role->role == 'Buyer')
+                    {
+                        $html .= '<div class="row" id="market-section">';
+                        foreach($markets as $market)
+                        {
+                            $checked = '';
+                            $user_market = UserMarket::where('user_id', $user->id)->where('market_id', $market->id)->first();
+                            if($user_market){
+                                $checked = 'checked';
+                            }
+                            $html .=
+                            '<div class="col-md-4">
+                                <div class="form-check">
+                                    <input '.$checked.' name="market_id[]" class="form-check-input" type="checkbox" value="'.$market->id.'" id="flexCheckDefault" />
+                                    <label class="form-check-label" for="flexCheckDefault">'.$market->name.'</label>
+                                </div>
+                            </div>
+                            ';
+                        }
+                        $html .= '</div>';
+
+                    }
+
+
+
+                    $html .='<div class=" input-group-md mt-4">
                         <b>Password : </b>
                         <input type="password"  name ="password"   class="form-control" placeholder="Enter Password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="">
                     </div>
