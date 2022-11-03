@@ -55,7 +55,7 @@
       </li>
       @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block" style="margin-left: -30px;">
-        <a href="/user" class="nav-link">User</a>
+        <a href="{{ route('users.index') }}" class="nav-link">User</a>
       </li>
       @endif
 

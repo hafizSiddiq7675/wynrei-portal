@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
             $user = new User();
             $user->name = "Super Admin";
             $user->email = "s@gmail.com";
-            $user->type = "REAL STATE AGENT";
             $user->phone = "123456789";
             $user->password = Hash::make('password');
             $user->email_verified_at = Carbon::now()->toDateTimeString();
@@ -32,9 +31,8 @@ class UserSeeder extends Seeder
 
 
             $user = new User();
-            $user->name = "Investor";
-            $user->email = "investor@gmail.com";
-            $user->type = "INVESTOR";
+            $user->name = "Buyer";
+            $user->email = "buyer@gmail.com";
             $user->phone = "123456789";
             $user->password = Hash::make('password');
             $user->email_verified_at = Carbon::now()->toDateTimeString();
@@ -44,7 +42,6 @@ class UserSeeder extends Seeder
             $user = new User();
             $user->name = "Agent";
             $user->email = "agent@gmail.com";
-            $user->type = "INVESTOR";
             $user->phone = "123456789";
             $user->password = Hash::make('password');
             $user->email_verified_at = Carbon::now()->toDateTimeString();

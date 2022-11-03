@@ -15,6 +15,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Agree</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -81,6 +82,7 @@ var table =  $('#bid-data-table').DataTable({
         { "data": "email" },
         { "data": "phone" },
         { "data": "agree" },
+        { "data": "status" , orderable: false, searchable: false },
         { "data": "action" , orderable: false, searchable: false }
     ]
 
@@ -136,6 +138,42 @@ var table =  $('#bid-data-table').DataTable({
 
 
         });
+
+
+
+
+        /////////////Bid Status
+
+        $(document).on('click', '.status-bid', function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+
+
+        var url = "{{ route('bid-status') }}";
+
+
+        var token = "{{ csrf_token() }}";
+
+        $.ajax({
+            type: 'POST',
+                url: url,
+                data: {'_token': token, '_method': 'POST', 'status' : status, 'bid_id' : id},
+                success: function (response) {
+
+                    swal({
+                        title: "Status",
+                        text: response.data,
+                        icon: "success",
+                        button: "OK!",
+                        timer: 1000,
+                    });
+
+                    $('#bid-data-table').DataTable().ajax.reload();
+
+
+                }
+        });
+    })
 
   </script>
 @endsection

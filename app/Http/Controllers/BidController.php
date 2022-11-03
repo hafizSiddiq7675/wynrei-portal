@@ -47,7 +47,8 @@ class BidController extends Controller
             4 =>'email',
             5 =>'phone',
             6 =>'agree',
-            7 =>'action'
+            7 =>'status',
+            8 =>'action'
 
         );
 
@@ -129,6 +130,22 @@ class BidController extends Controller
                    $agree = 'Yes';
                 }
 
+                $class = 'danger';
+                if($bid->status == 'Accepted')
+                {
+                    $class = 'success';
+                }
+
+                if($bid->status == 'Rejected')
+                {
+                    $class = 'danger';
+                }
+
+                if($bid->status == 'Pending')
+                {
+                    $class = 'warning';
+                }
+
                 $nestedData['id'] = $bid->id;
                 $nestedData['property_address'] = $bid->property_address;
                 $nestedData['bid_amount'] = $bid->bid_amount;
@@ -137,6 +154,26 @@ class BidController extends Controller
                 $nestedData['phone'] = $user->phone;
                 $nestedData['agree'] = $agree;
 
+
+                $nestedData['status'] = '
+
+                <td class="button-action">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-'.$class.' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            '.$bid->status.'
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-success status-bid" data-status="Accepted" data-id="'.$bid->id.'" href="javascript:0"><b>Accept</b></a>
+
+                            <a class="dropdown-item text-danger status-bid" data-status="Rejected" data-id="'.$bid->id.'" href="javascript:0"><b> Reject </b></a>
+
+
+                            <a class="dropdown-item text-warning status-bid" data-status="Pending" data-id="'.$bid->id.'" href="javascript:0"><b>Pending</b></a>
+
+                        </div>
+                    </div>
+
+                </td>';
 
 
                 $nestedData['action'] = '
@@ -380,6 +417,26 @@ class BidController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+     public function status(Request $request)
+     {
+
+        $bid = Bid::where('id', $request->bid_id)->first();
+        $bid->status = $request->status;
+
+        $bid->save();
+
+        return response()->json([
+            'success' => true,
+            'data'  => 'Bid Status Updated Successfuly'
+        ]);
+
+     }
+
+
+
+
     public function destroy($id)
     {
         $bid = Bid::where('id', $id)->delete();
