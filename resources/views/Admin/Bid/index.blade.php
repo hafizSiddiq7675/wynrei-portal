@@ -1,9 +1,13 @@
 @extends('dashboard')
 @section('content')
     <div class="card p-3 table-card">
+        <input type="hidden" name="check-role" id="check-role" value="{{ $role }}" >
+        @if ($role == 'SuperAdmin')
         <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBidModal"> + Add Bid</button>
         </div>
+        @endif
+
        <div class="table-responsive">
         <table class="table table-hover" id="bid-data-table" width="100%">
             <thead class="bg-primary text-white header-border text-center">
@@ -49,6 +53,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
+
+
   <script>
     $(document).ready(function () {
 
@@ -87,6 +93,13 @@ var table =  $('#bid-data-table').DataTable({
     ]
 
 });
+
+
+    var role = $('#check-role').val();
+    if(role == 'Agent')
+    {
+        table.column( 8 ).visible( false );
+    }
 
 });
 
@@ -175,5 +188,9 @@ var table =  $('#bid-data-table').DataTable({
         });
     })
 
+
+
   </script>
+
+
 @endsection

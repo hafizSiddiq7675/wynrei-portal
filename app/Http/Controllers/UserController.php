@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Libraries\Helper;
 use App\Models\UserRole;
+use App\Http\Middleware\Acl;
+
 
 class UserController extends Controller
 {
@@ -24,6 +26,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(Acl::class);
     }
 
 
