@@ -24,7 +24,7 @@ class BidController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
         $this->middleware(Acl::class);
     }
 
@@ -295,7 +295,7 @@ class BidController extends Controller
                     'link' => env('APP_URL').'bid'
                 ];
 
-                
+
                 Mail::to($user->email)->send(new BidMail($data));
 
                 return response()->json([
