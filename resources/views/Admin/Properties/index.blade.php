@@ -1,5 +1,18 @@
 @extends('dashboard')
 @section('content')
+
+@if(!empty($message))
+<?php echo $message;exit;?>
+<script>
+swal({
+  title: "bID CReated",
+  text: "bID CReated",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+  })
+</script>
+@endif
     <div class="card p-3 table-card">
         <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPropertyModal">Add Property</button>
@@ -46,8 +59,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-  <script>
-    $(document).ready(function () {
+<script>
+$(document).ready(function () {
 
 var table =  $('#property-data-table').DataTable({
 
@@ -86,54 +99,54 @@ var table =  $('#property-data-table').DataTable({
 
 
 
+$(document).on('click', '.delete-property', function(){
+  var id = $(this).data('id');
 
 
-    $(document).on('click', '.delete-property', function(){
-            var id = $(this).data('id');
+  swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      })
+      .then((willDelete) => {
+      if (willDelete) {
 
+      var url = "{{ route('property.destroy',':id') }}";
+      url = url.replace(':id', id);
 
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-                })
-                .then((willDelete) => {
-                if (willDelete) {
+      var token = "{{ csrf_token() }}";
 
-                var url = "{{ route('property.destroy',':id') }}";
-                url = url.replace(':id', id);
+      $.ajax({
+          type: 'Delete',
+              url: url,
+              data: {'_token': token, '_method': 'DELETE'},
+              success: function (response) {
 
-                var token = "{{ csrf_token() }}";
-
-                $.ajax({
-                    type: 'Delete',
-                        url: url,
-                        data: {'_token': token, '_method': 'DELETE'},
-                        success: function (response) {
-
-                            $('#property-data-table').DataTable().ajax.reload();
-                            swal("Poof! Property has been deleted!", {
-                                icon: "success",
-                                timer: 1000,
-                            });
-                        }
-                });
+                  $('#property-data-table').DataTable().ajax.reload();
+                  swal("Poof! Property has been deleted!", {
+                      icon: "success",
+                      timer: 1000,
+                  });
+              }
+      });
 
 
 
 
-                } else {
-                    swal("Your Category is safe!");
-                }
-            });
+      } else {
+          swal("Your Category is safe!");
+      }
+  });
 
 
 
 
 
-    });
+});
   </script>
+
+  
 
 @endsection

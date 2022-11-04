@@ -30,7 +30,8 @@ class Acl
 
         if($role == 'Buyer')
         {
-            echo '<pre>'; print_r('Buyer'); exit;
+            return $next($request);
+            // echo '<pre>'; print_r('Buyer'); exit;
         }
 
         if($role == 'Agent')

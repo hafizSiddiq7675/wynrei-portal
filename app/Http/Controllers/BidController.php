@@ -111,9 +111,6 @@ class BidController extends Controller
                     ->count();
 
 
-
-
-
                 }
 
                 $data = array();
@@ -224,6 +221,8 @@ class BidController extends Controller
     {
         //
     }
+    
+  
 
     /**
      * Store a newly created resource in storage.
@@ -274,18 +273,15 @@ class BidController extends Controller
 
                 $bid->save();
 
-
                 return response()->json([
                     'success' => true,
                     'data'  => 'Bid Created Successfuly'
                 ]);
 
-            }
 
 
 
-
-
+        }
     }
 
     /**
