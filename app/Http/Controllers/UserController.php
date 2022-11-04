@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewUserMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -28,8 +30,8 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware(Acl::class);
+        $this->middleware(['auth', 'verified'],  ['except' => ['createPassword', 'storePassword' ]]);
+        $this->middleware(Acl::class, ['except' => ['createPassword', 'storePassword' ]]);
     }
 
 
@@ -465,9 +467,36 @@ class UserController extends Controller
     }
 
 
-    public function createPassword()
+    public function createPassword($email, $token)
     {
-        return view('auth.passwords.new-password');
+
+
+        return view('auth.passwords.new-password', compact('email', 'token'));
+    }
+
+
+    public function storePassword(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'password' => 'required|confirmed',
+        ]);
+        $reset = DB::table('password_resets')->where('email', $request->email)->where('token', $request->token)->first();
+
+        if($reset)
+        {
+            $user = User::where('email', $request->email)->first();
+            $user->password = Hash::make($request->password);
+            $user->email_verified_at = Carbon::now()->toDateTimeString();
+            $user->save();
+            Auth::login($user);
+            return redirect('/home');
+
+        }
+
+        return Redirect::back()->withErrors(['invalid' => 'Invalid Link']);
+
+
     }
 
     /**

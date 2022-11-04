@@ -24,7 +24,7 @@
                     <div class=" input-group-md">
                         <input type="email" name="email"  class="form-control" placeholder="Enter User Name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  value="{{ old('email') }}" autofocus>
                         @error('email')
-                            <span class="" role="alert">
+                            <span class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -51,7 +51,7 @@
                             Forgot your Password?</a>
                         </div>
                         @endif
-                        
+
                       </div>
                       <div class="text-center text-muted">
                         © 2022 All Rights Reserved. WYNREI Portal -

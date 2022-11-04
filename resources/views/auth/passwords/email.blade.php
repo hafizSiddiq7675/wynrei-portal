@@ -15,6 +15,11 @@
        <div class="vertical-alignment">
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 card auth-card ">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
                <h4 class="mt-4 text-center">
                 Reset <span class="text-primary">Password</span>
                </h4>
