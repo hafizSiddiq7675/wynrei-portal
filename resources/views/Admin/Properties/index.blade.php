@@ -53,6 +53,7 @@ swal({
 @include('Admin.Properties.create')
 @include('Admin.Properties.edit')
 @include('Admin.Properties.view')
+@include('Admin.buyer.bid')
 
 
 
@@ -147,6 +148,6 @@ $(document).on('click', '.delete-property', function(){
 });
   </script>
 
-  
+
 
 @endsection

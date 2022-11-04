@@ -202,6 +202,8 @@ class UserController extends Controller
 
         if($request->user_id != '')
         {
+
+            // echo '<pre>'; print_r($request->all()); exit;
            $user = User::where('id', $request->user_id)->first();
            $user->name = $request->name;
            $user->email = $request->email;
@@ -222,19 +224,20 @@ class UserController extends Controller
 
 
            ////Markets
+
+
+           $old_markets = UserMarket::where('user_id', $user->id)->exists();
+            if($old_markets)
+            {
+                UserMarket::where('user_id', $user->id)->delete();
+            }
            if(isset($request->market_id))
            {
+
                 $role = Role::where('id', $request->role_id)->first();
                 if($role->role == 'Buyer')
                 {
-                    $markets = Market::all();
-
-                    $old_markets = UserMarket::where('user_id', $user->id)->exists();
-                    if($old_markets)
-                    {
-                        UserMarket::where('user_id', $user->id)->delete();
-                    }
-
+                   
                     foreach($request->market_id as $market)
                     {
                         $user_market = new UserMarket();

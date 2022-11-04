@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Acl;
 use App\Libraries\Helper;
+use App\Models\UserMarket;
 
 class PropertyController extends Controller
 {
@@ -32,15 +33,15 @@ class PropertyController extends Controller
 
     public function index()
     {
-       
-        $markets = Property::all();
+
+        $markets = Market::all();
         return view('Admin.Properties.index', compact('markets'));
-      
+
     }
     // code by aiman
     public function view(Request $request)
     {
-        echo $request->message;exit;
+        // echo $request->message;exit;
         $user =  auth::user();
         $userId = Helper::userId($user);
         $users = User::all();
@@ -62,7 +63,7 @@ class PropertyController extends Controller
             if($prop->property_type == 'Single-family')
             {
                 $options_family = 'Single-family';
-                
+
             }elseif($prop->property_type == 'Multi-family'){
                 $options_family = 'Multi-family';
 
@@ -100,7 +101,17 @@ class PropertyController extends Controller
 
                     $data = Property::where('user_id', $user->id)->get();
 
-                }else{
+                }elseif($role == 'Buyer'){
+
+
+                    $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+                    $data =  Property::whereIn('market_id', $user_markets)->get();
+
+
+
+                }
+
+                else{
 
                     $data = Property::all();
 
@@ -127,7 +138,18 @@ class PropertyController extends Controller
                             ->limit($limit)
                             ->orderBy($order,$dir)
                         ->get();
-                    }else{
+                    }elseif($role == 'Buyer'){
+
+                        $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+                        $properties = Property::whereIn('market_id', $user_markets)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                        ->get();
+                    }
+
+
+                    else{
                         $properties = Property::offset($start)
                             ->limit($limit)
                             ->orderBy($order,$dir)
@@ -168,7 +190,38 @@ class PropertyController extends Controller
 
                                 ->count();
 
-                            }else{
+                            }elseif($role == 'Buyer'){
+
+                                $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+
+                                $properties =  Property::whereIn('market_id',  $user_markets)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+
+                                    })
+                                    ->offset($start)
+                                    ->limit($limit)
+                                    ->orderBy($order, $dir)
+                                ->get();
+
+
+                                $totalFiltered =  Property::whereIn('market_id',  $user_markets)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+
+                                    })
+                                ->count();
+
+
+                            }
+
+                            else{
 
 
                                 $properties =  Property::where('id','LIKE',"%{$search}%")
@@ -211,8 +264,8 @@ class PropertyController extends Controller
 
                         <td class="button-action">
                             <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
-                        
-                            <a href="javascript:0" class="btn btn-sm btn-primary  data-bs-toggle="modal" data-bs-target="#addBidModal">+ Add Bid</a>
+
+                            <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
                         </td>';
 
                     }else{
