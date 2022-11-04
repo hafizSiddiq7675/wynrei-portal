@@ -22,6 +22,14 @@ class Helper
             return $role->role;
         }
     }
+    // code by aiman
+    public static function userId($user)
+    {
+        
+        $users = $user->id;
+        return $users;
+    }
+     // code by aiman
 
 
     public static function checkRole($user)

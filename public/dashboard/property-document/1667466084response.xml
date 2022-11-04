@@ -1,0 +1,8 @@
+<ErrorResponse xmlns="http://webservices.amazon.com/AWSFault/2005-15-09">
+  <Error>
+    <Type>Sender</Type>
+    <Code>InvalidAction</Code>
+    <Message>Could not find operation ConfirmSubscription for version 2008-10-17</Message>
+  </Error>
+  <RequestId>3ba40f41-d5a2-5072-a186-5494a55ddb15</RequestId>
+</ErrorResponse>
