@@ -9,6 +9,10 @@ use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Acl;
+use App\Libraries\Helper;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BidMail;
 
 class BidController extends Controller
 {
@@ -20,7 +24,8 @@ class BidController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
+        $this->middleware(Acl::class);
     }
 
 
@@ -29,7 +34,9 @@ class BidController extends Controller
 
         $properties = Property::all();
         $users = User::all();
-        return view('Admin.Bid.index', compact('properties', 'users'));
+        $user =  auth::user();
+        $role = Helper::role($user);
+        return view('Admin.Bid.index', compact('properties', 'users', 'role'));
     }
 
 
@@ -51,8 +58,19 @@ class BidController extends Controller
             8 =>'action'
 
         );
+                $user =  auth::user();
+                $role = Helper::role($user);
 
-                $data = Bid::all();
+                if($role == 'Agent')
+                {
+
+                    $property_address = Property::where('user_id', $user->id)->pluck('property_addres')->toArray();
+                    $data =  Bid::whereIn('property_address', $property_address)->get();
+
+                }else{
+                    $data = Bid::all();
+                }
+
 
                 $totalData = $data->count();
 
@@ -66,49 +84,118 @@ class BidController extends Controller
                 if(empty($request->input('search.value')))
                 {
 
+                    if($role == 'Agent')
+                    {
+                         $property_address = Property::where('user_id', $user->id)->pluck('property_addres')->toArray();
+                        // $data =  Bid::whereIn('property_address', $property_address)->get();
+                        $bids = Bid::whereIn('property_address', $property_address)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get();
+
+
+                    }else{
                         $bids = Bid::offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get();
+                    }
+
 
                 }
                 else {
                     $search = $request->input('search.value');
 
+                    if($role == 'Agent')
+                    {
+                        $property_address = Property::where('user_id', $user->id)->pluck('property_addres')->toArray();
 
 
-                    $bids = Bid::where('id','LIKE',"%{$search}%")
-                        ->orWhere('property_address', 'LIKE',"%{$search}%")
-                        ->orWhere('bid_amount', 'LIKE',"%{$search}%")
-                        ->orWhere('agree', 'LIKE',"%{$search}%")
-                        ->orWhereHas(
-                            'user',
-                            function ($q) use ($search) {
-                                $q->where('name', 'LIKE',"%{$search}%")
-                                ->orWhere('email', 'LIKE',"%{$search}%")
-                                ->orWhere('phone', 'LIKE',"%{$search}%");
+                        $bids =  Bid::whereIn('property_address',  $property_address)->where(function ($q) use ($search) {
+                            $q->orWhere('id','LIKE',"%{$search}%")
+                                ->orWhere('property_address', 'LIKE',"%{$search}%")
+                                ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                                ->orWhere('agree', 'LIKE',"%{$search}%")
+                                ->orWhereHas(
+                                    'user',
+                                    function ($q2) use ($search) {
+                                        $q2->where('name', 'LIKE',"%{$search}%")
+                                        ->orWhere('email', 'LIKE',"%{$search}%")
+                                        ->orWhere('phone', 'LIKE',"%{$search}%");
 
-                            }
-                        )
-                        ->offset($start)
-                        ->limit($limit)
-                        ->orderBy($order,$dir)
-                    ->get();
+                                    }
+                                );
 
-                    $totalFiltered = Bid::where('id','LIKE',"%{$search}%")
-                        ->orWhere('property_address', 'LIKE',"%{$search}%")
-                        ->orWhere('bid_amount', 'LIKE',"%{$search}%")
-                        ->orWhere('agree', 'LIKE',"%{$search}%")
-                        ->orWhereHas(
-                            'user',
-                            function ($q) use ($search) {
-                                $q->where('name', 'LIKE',"%{$search}%")
-                                ->orWhere('email', 'LIKE',"%{$search}%")
-                                ->orWhere('phone', 'LIKE',"%{$search}%");
+                            })
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order, $dir)
+                            ->get();
 
-                            }
-                        )
-                    ->count();
+
+                            $totalFiltered =  Bid::whereIn('property_address',  $property_address)->where(function ($q) use ($search) {
+                                $q->orWhere('id','LIKE',"%{$search}%")
+                                    ->orWhere('property_address', 'LIKE',"%{$search}%")
+                                    ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                                    ->orWhere('agree', 'LIKE',"%{$search}%")
+                                    ->orWhereHas(
+                                        'user',
+                                        function ($q2) use ($search) {
+                                            $q2->where('name', 'LIKE',"%{$search}%")
+                                            ->orWhere('email', 'LIKE',"%{$search}%")
+                                            ->orWhere('phone', 'LIKE',"%{$search}%");
+
+                                        }
+                                    );
+
+                                })
+
+                            ->count();
+
+
+
+
+                    }else{
+
+
+                        $bids = Bid::where('id','LIKE',"%{$search}%")
+                            ->orWhere('property_address', 'LIKE',"%{$search}%")
+                            ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                            ->orWhere('agree', 'LIKE',"%{$search}%")
+                            ->orWhereHas(
+                                'user',
+                                function ($q) use ($search) {
+                                    $q->where('name', 'LIKE',"%{$search}%")
+                                    ->orWhere('email', 'LIKE',"%{$search}%")
+                                    ->orWhere('phone', 'LIKE',"%{$search}%");
+
+                                }
+                            )
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                        ->get();
+
+                        $totalFiltered = Bid::where('id','LIKE',"%{$search}%")
+                            ->orWhere('property_address', 'LIKE',"%{$search}%")
+                            ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                            ->orWhere('agree', 'LIKE',"%{$search}%")
+                            ->orWhereHas(
+                                'user',
+                                function ($q) use ($search) {
+                                    $q->where('name', 'LIKE',"%{$search}%")
+                                    ->orWhere('email', 'LIKE',"%{$search}%")
+                                    ->orWhere('phone', 'LIKE',"%{$search}%");
+
+                                }
+                            )
+                        ->count();
+
+                    }
+
+
+
 
 
                 }
@@ -151,6 +238,11 @@ class BidController extends Controller
                 $nestedData['phone'] = $user->phone;
                 $nestedData['agree'] = $agree;
 
+                $user =  auth::user();
+                $role = Helper::role($user);
+
+
+
 
                 $nestedData['status'] = '
 
@@ -173,12 +265,25 @@ class BidController extends Controller
                 </td>';
 
 
-                $nestedData['action'] = '
 
-                <td class="button-action">
-                    <a href="javascript:0" class="btn btn-sm btn-warning  edit-bid" data-id='.$bid->id.'  data-toggle="modal" data-target="#editusermodalss">Edit</a>
-                    <a href="javascript:0" class="btn btn-sm btn-danger delete-bid" data-id='.$bid->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
-                </td>';
+
+                if($role == 'SuperAdmin')
+                {
+                    $nestedData['action'] = '
+
+                        <td class="button-action">
+                            <a href="javascript:0" class="btn btn-sm btn-warning  edit-bid" data-id='.$bid->id.'  data-toggle="modal" data-target="#editusermodalss">Edit</a>
+                            <a href="javascript:0" class="btn btn-sm btn-danger delete-bid" data-id='.$bid->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        </td>
+                    ';
+                }else{
+
+                    $nestedData['action'] = '';
+
+                }
+
+
+
 
                 $data[] = $nestedData;
 
@@ -259,10 +364,26 @@ class BidController extends Controller
 
                 $bid->save();
 
+                $property = Property::where('property_addres', $request->property_address)->first();
+                $user = User::where('id', $property->user_id)->first();
+
+                $customer = User::where('id', $request->user_id)->first();
+                $data = [
+                    'bid' => $request->bid_amount,
+                    'customer' => $customer,
+                    'link' => env('APP_URL').'bid'
+                ];
+
+
+                Mail::to($user->email)->send(new BidMail($data));
+
                 return response()->json([
                     'success' => true,
-                    'data'  => 'Bid Updated Successfuly'
+                    'data'  => 'Bid Updated Successfuly',
+
                 ]);
+
+
 
             }else{
                 $bid = new Bid();

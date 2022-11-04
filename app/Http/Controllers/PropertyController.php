@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Acl;
 use App\Libraries\Helper;
 
-
 class PropertyController extends Controller
 {
     /**
@@ -25,7 +24,8 @@ class PropertyController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+
+        $this->middleware(['auth', 'verified']);
         $this->middleware(Acl::class);
     }
 
@@ -92,35 +92,86 @@ class PropertyController extends Controller
             3=>'action'
 
         );
-        $user =  auth::user();
-        $role = Helper::role($user);
+                $user =  auth::user();
+                $role = Helper::role($user);
 
-                $data = Property::all();
+                if($role == 'Agent')
+                {
 
-                $totalData = $data->count();
+                    $data = Property::where('user_id', $user->id)->get();
 
-                $totalFiltered = $totalData;
+                }else{
 
-                $limit = $request->input('length');
-                $start = $request->input('start');
-                $order = $columns[$request->input('order.0.column')];
-                $dir = $request->input('order.0.dir');
+                    $data = Property::all();
+
+                }
+
+                    $totalData = $data->count();
+                    $totalFiltered = $totalData;
+
+                    $limit = $request->input('length');
+                    $start = $request->input('start');
+                    $order = $columns[$request->input('order.0.column')];
+                    $dir = $request->input('order.0.dir');
+
+
+
 
                 if(empty($request->input('search.value')))
                 {
 
+                    if($role == 'Agent')
+                    {
+                        $properties = Property::where('user_id', $user->id)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                        ->get();
+                    }else{
                         $properties = Property::offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                        ->get();
+                    }
+
+
 
                 }
                 else {
                     $search = $request->input('search.value');
 
+                            if($role == 'Agent')
+                            {
+
+                                $properties =  Property::where('user_id', '=',  $user->id)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+
+                                    })
+                                    ->offset($start)
+                                    ->limit($limit)
+                                    ->orderBy($order, $dir)
+                                    ->get();
 
 
-                        $properties =  Property::where('id','LIKE',"%{$search}%")
+
+                                $totalFiltered =  Property::where('user_id', '=',  $user->id)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+                                    })
+
+                                ->count();
+
+                            }else{
+
+
+                                $properties =  Property::where('id','LIKE',"%{$search}%")
                                     ->orWhere('property_addres', 'LIKE',"%{$search}%")
                                     ->orWhere('city', 'LIKE',"%{$search}%")
                                     ->orWhere('state', 'LIKE',"%{$search}%")
@@ -128,14 +179,18 @@ class PropertyController extends Controller
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
-                                    ->get();
+                                ->get();
 
-                        $totalFiltered = Property::where('id','LIKE',"%{$search}%")
+                                $totalFiltered = Property::where('id','LIKE',"%{$search}%")
                                     ->orWhere('property_addres', 'LIKE',"%{$search}%")
                                     ->orWhere('city', 'LIKE',"%{$search}%")
                                     ->orWhere('state', 'LIKE',"%{$search}%")
                                     ->orWhere('zip_code', 'LIKE',"%{$search}%")
-                                    ->count();
+                                ->count();
+
+                            }
+
+
 
                 }
 

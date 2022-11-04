@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Market;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Middleware\Acl;
 
 class MarketController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+
+        $this->middleware(['auth', 'verified']);
+        $this->middleware(Acl::class);
     }
     /**
      * Display a listing of the resource.

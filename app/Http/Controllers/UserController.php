@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Libraries\Helper;
 use App\Models\UserRole;
+use App\Http\Middleware\Acl;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewUserMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -23,7 +30,8 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified'],  ['except' => ['createPassword', 'storePassword' ]]);
+        $this->middleware(Acl::class, ['except' => ['createPassword', 'storePassword' ]]);
     }
 
 
@@ -55,7 +63,8 @@ class UserController extends Controller
 
         );
 
-                $data = User::all();
+                // $data = User::all();
+                $data = User::where('id', '!=' , auth::user()->id)->get();
 
                 $totalData = $data->count();
 
@@ -69,7 +78,8 @@ class UserController extends Controller
                 if(empty($request->input('search.value')))
                 {
 
-                        $users = User::offset($start)
+                        $users = User::where('id', '!=' , auth::user()->id)
+                                ->offset($start)
                                 ->limit($limit)
                                 ->orderBy($order,$dir)
                                 ->get();
@@ -80,7 +90,8 @@ class UserController extends Controller
 
 
 
-                        $users =  User::where('id','LIKE',"%{$search}%")
+                        $users =  User::where('id', '!=' , auth::user()->id)
+                                    ->where('id','LIKE',"%{$search}%")
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
                                     ->orWhere('type', 'LIKE',"%{$search}%")
@@ -90,7 +101,8 @@ class UserController extends Controller
                                     ->orderBy($order,$dir)
                                     ->get();
 
-                        $totalFiltered = User::where('id','LIKE',"%{$search}%")
+                        $totalFiltered = User::where('id', '!=' , auth::user()->id)
+                                    ->where('id','LIKE',"%{$search}%")
                                     ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->orWhere('email', 'LIKE',"%{$search}%")
                                     ->orWhere('type', 'LIKE',"%{$search}%")
@@ -282,6 +294,36 @@ class UserController extends Controller
 
 
 
+
+            $reset = DB::table('password_resets')->where('email', $request->email)->first();
+
+            if (!$reset) {
+                $token =  md5(uniqid(rand(), true));
+                DB::table('password_resets')->insert([
+                    'email' => $request->email,
+                    'token' => $token,
+                    'created_at' => gmdate('Y-m-d G:i:s')
+                ]);
+                $result['token'] = $token;
+            } else {
+                $token = md5(uniqid(rand(), true));
+                DB::table('password_resets')->where('email', $request->email)
+                    ->update([
+                        'email' => $request->email,
+                        'token' => $token,
+                        'created_at' => gmdate('Y-m-d G:i:s')
+                    ]);
+                $result['token'] = $token;
+            }
+
+            $data = [
+                'title' => 'Welcome',
+                'email' => $request->email,
+                'token' => $token
+            ];
+            Mail::to($request->email)->send(new NewUserMail($data));
+
+
             return response()->json([
                 'success' => true,
                 'data'  => 'User Account Created Successfuly'
@@ -422,6 +464,39 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+
+    public function createPassword($email, $token)
+    {
+
+
+        return view('auth.passwords.new-password', compact('email', 'token'));
+    }
+
+
+    public function storePassword(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'password' => 'required|confirmed',
+        ]);
+        $reset = DB::table('password_resets')->where('email', $request->email)->where('token', $request->token)->first();
+
+        if($reset)
+        {
+            $user = User::where('email', $request->email)->first();
+            $user->password = Hash::make($request->password);
+            $user->email_verified_at = Carbon::now()->toDateTimeString();
+            $user->save();
+            Auth::login($user);
+            return redirect('/home');
+
+        }
+
+        return Redirect::back()->withErrors(['invalid' => 'Invalid Link']);
+
+
     }
 
     /**

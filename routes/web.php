@@ -39,7 +39,7 @@ Route::get('/forget', function () {
 });
 
 Route::get('/new-password', function () {
-    return view('auth/newpassword');
+    return view('auth_old/newpassword');
 });
 
 Route::get('/test', function () {
@@ -51,7 +51,9 @@ Route::get('/forget', function () {
     return view('auth_old/email');
 });
 
-Auth::routes();
+// Auth::routes();
+Auth::routes(['register' => false, 'verify' => true]);
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -81,6 +83,8 @@ Route::get('/support', function () {
 
 //Users
 Route::post('/users-data', [App\Http\Controllers\UserController::class, 'data'])->name('user-data');
+Route::get('/create/password/{email}/{token}', [App\Http\Controllers\UserController::class, 'createPassword']);
+Route::post('/store/password', [App\Http\Controllers\UserController::class, 'storePassword'])->name('store.password');
 Route::resource('users', UserController::class);
 
 //Property
@@ -99,7 +103,7 @@ Route::post('/bid-create', [App\Http\Controllers\BidController::class, 'store'])
 // code by aiman
 Route::resource('bid', BidController::class);
 
-
 ////Market
 Route::post('/market-data', [App\Http\Controllers\MarketController::class, 'data'])->name('market-data');
 Route::resource('market', MarketController::class);
+
