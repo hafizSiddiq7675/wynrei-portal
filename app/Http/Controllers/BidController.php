@@ -326,8 +326,8 @@ class BidController extends Controller
     {
         //
     }
-    
-  
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -335,6 +335,46 @@ class BidController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
+     public function buyerBid(Request $request)
+     {
+        $data = $request->all();
+            $validator = Validator::make($data, [
+                'bid_amount' => 'required',
+            ]);
+
+            if($validator->fails()){
+
+                return response()->json([
+                    'success' => false,
+                    'data'  => $validator->messages()->first()
+                ]);
+
+            }
+
+            // echo '<pre>'; print_r($request->all()); exit;
+
+           $Property = Property::where('id', $request->property_id)->first();
+
+            $bid = new Bid();
+            $bid->property_address = $Property->property_addres;
+            $bid->buyer_id = auth::user()->id;
+            $bid->bid_amount = $request->bid_amount;
+            $bid->agree = $request->agree;
+
+            $bid->save();
+
+            return response()->json([
+                'success' => true,
+                'data'  => 'Bid Created Successfuly'
+            ]);
+
+     }
+
+
+
+
     public function store(Request $request)
     {
             $data = $request->all();

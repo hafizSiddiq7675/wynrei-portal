@@ -107,3 +107,7 @@ Route::resource('bid', BidController::class);
 Route::post('/market-data', [App\Http\Controllers\MarketController::class, 'data'])->name('market-data');
 Route::resource('market', MarketController::class);
 
+
+///Buyer Bid Store
+Route::post('/buyer-bid', [App\Http\Controllers\BidController::class, 'buyerBid'])->name('buyer-bid');
+
