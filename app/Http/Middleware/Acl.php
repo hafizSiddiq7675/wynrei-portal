@@ -30,15 +30,38 @@ class Acl
 
         if($role == 'Buyer')
         {
-            return $next($request);
-            // echo '<pre>'; print_r('Buyer'); exit;
+            $controllerAction = class_basename(Route::currentRouteAction());
+            
+            if(strpos($controllerAction, 'data'))
+            {
+                return $next($request);
+            }
+
+            if( $controllerAction == 'PropertyController@index')
+            {
+                return $next($request);
+
+            }
+
+            if( $controllerAction == 'BidController@bidBuyer')
+            {
+                return $next($request);
+
+            }
+
+            if( $controllerAction == 'BidController@editBidBuyer')
+            {
+                return $next($request);
+
+            }
+
+            return abort(403);
         }
 
         if($role == 'Agent')
         {
-            // return $next($request);
+
             $controllerAction = class_basename(Route::currentRouteAction());
-// echo '<pre>'; print_r($controllerAction); exit;
 
             if(strpos($controllerAction, 'data'))
             {

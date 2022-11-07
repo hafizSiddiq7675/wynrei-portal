@@ -54,6 +54,7 @@ swal({
 @include('Admin.Properties.edit')
 @include('Admin.Properties.view')
 @include('Admin.buyer.bid')
+@include('Admin.buyer.edit-bid')
 
 
 

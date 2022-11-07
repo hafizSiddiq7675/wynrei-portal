@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Acl;
 use App\Libraries\Helper;
+use App\Models\Bid;
 use App\Models\UserMarket;
 
 class PropertyController extends Controller
@@ -110,7 +111,6 @@ class PropertyController extends Controller
 
 
                 }
-
                 else{
 
                     $data = Property::all();
@@ -147,7 +147,6 @@ class PropertyController extends Controller
                             ->orderBy($order,$dir)
                         ->get();
                     }
-
 
                     else{
                         $properties = Property::offset($start)
@@ -258,27 +257,59 @@ class PropertyController extends Controller
                     $nestedData['city'] = $property->city;
                     $nestedData['state'] = $property->state;
                     $nestedData['zip_code'] = $property->zip_code;
-                    // code by aiman
-                    if($role == 'Buyer'){
+
+
+
+                    if($role == 'Agent')
+                    {
                         $nestedData['action'] = '
+                            <td class="button-action">
+                                <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
+                            </td>
+                        ';
+                    }
 
-                        <td class="button-action">
-                            <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+                    else if($role == 'Buyer'){
 
-                            <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
-                        </td>';
+                        $buyer_bid = Bid::where('user_id', auth::user()->id)
+                                    ->where('property_address', $property->property_addres)
+                                    ->first();
+                        if($buyer_bid){
 
-                    }else{
+                            $nestedData['action'] = '
+
+                                <td class="button-action">
+                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                    <a href="javascript:0" class="btn btn-sm btn-warning buyer-bid-edit" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerEditBidModal1">Edit Bid</a>
+                                </td>
+                            ';
+
+                        }else{
+                            $nestedData['action'] = '
+
+                                <td class="button-action">
+                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                    <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
+                                </td>
+                            ';
+                        }
+
+
+                    }
+                    else{
                         $nestedData['action'] = '
 
                         <td class="button-action">
                             <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
                             <a href="javascript:0" class="btn btn-sm btn-warning  edit-property" data-id='.$property->id.'  data-toggle="modal" data-target="">Edit</a>
                             <a href="javascript:0" class="btn btn-sm btn-danger delete-property" data-id='.$property->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
-                        </td>';
-
+                        </td>
+                        ';
                     }
-                    // code by aiman
+
+
 
 
                     $data[] = $nestedData;

@@ -98,9 +98,8 @@ Route::resource('property', PropertyController::class);
 ////Bid
 Route::post('/bid-status', [App\Http\Controllers\BidController::class, 'status'])->name('bid-status');
 Route::post('/bid-data', [App\Http\Controllers\BidController::class, 'data'])->name('bid-data');
-// code by aiman
-Route::post('/bid-create', [App\Http\Controllers\BidController::class, 'store']);
-// code by aiman
+Route::post('/bid-buyer', [App\Http\Controllers\BidController::class, 'bidBuyer'])->name('bid-buyer');
+Route::get('/bid-buyer/edit/{id}', [App\Http\Controllers\BidController::class, 'editBidBuyer'])->name('edit-bid-buyer');
 Route::resource('bid', BidController::class);
 
 ////Market

@@ -46,7 +46,7 @@
         <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block" style="margin-left: -30px;">
-        <a href="/user" class="nav-link">User</a>
+        <a href="/users" class="nav-link">User</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/property" class="nav-link">Property</a>
@@ -120,7 +120,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
- 
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="ml-4 mr-4">

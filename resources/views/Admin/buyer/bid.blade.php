@@ -9,14 +9,16 @@
         </div>
         <div class="modal-body">
           <div>
-
+            <form action="">
                 <div class="mt-4 mb-4">
 
-                        <input type="text" id="buyer_property_id" name="property_id" value="">
+
+
+                      <input type="hidden" name="buyer_property_id" id="buyer_property_id" value="">
                       <div class="input-group-md mt-3">
-                        <label for=""> Bid Ammount *</label>
-                        <input type="number" name="bid_amount" id=""  class="form-control" placeholder="Enter Phone" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
-                        <span id="bid-error-msg-add" class="text-danger pl-1"><span>
+                        <label for=""> Bid Amount *</label>
+                        <input type="number" name="bid_amount" id=""  class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
+                        <span id="buyer-bid-error-msg-add" class="text-danger pl-1"><span>
 
                       </div>
 
@@ -27,12 +29,12 @@
                     </div>
 
                 </div>
-
+               </form>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="buyer-submit-btn" class="btn btn-primary btn-md">Add </button>
+          <button type="button" id="buyer-bid-btn" class="btn btn-primary btn-md">Add </button>
         </div>
       </div>
     </div>
@@ -41,59 +43,60 @@
 
 
   <script>
-    $(document).on('click', '.buyer-bid', function(e){
+   $(document).on('click', '.buyer-bid', function(){
         var id = $(this).data('id');
         $('#buyer_property_id').val(id);
-    });
+   });
 
 
-    $(document).on('click', '#buyer-submit-btn', function(e){
-
-        e.preventDefault();
-       $.ajaxSetup({
+   ///////////////////////////////Submit
+   $(document).on('click', '#buyer-bid-btn', function(e){
+       e.preventDefault();
+            alert('hi');
+        $.ajaxSetup({
             headers: {
                 "_token": "{{ csrf_token() }}",
             }
         });
 
        $.ajax({
-          type:'POST',
-          url: "{{ route('buyer-bid')}}",
-          method: 'post',
-          data: $('#buyer-bid-from').serialize(),
-          success: (response) => {
+            url: "{{ route('bid-buyer')}}",
+            method: 'post',
+            data: $('#buyer-bid-from').serialize(),
+           success: (response) => {
+
+            // $('#user-error-msg-add').html('');
+            // $('#property-error-msg-add').html('');
+            // $('#bid-error-msg-add').html('');
             // alert(response);
-
-            $('#bid-error-msg-add').html('');
-
-
             if(response.success == true)
                 {
 
                     swal({
-                        title: "Updated",
+                        title: "Bid Added",
                         text: response.data,
                         icon: "success",
                         button: "OK!",
                         timer: 1000,
                     });
-
+                    $('#buyer-bid-from').trigger("reset");
                     $('#buyerBidModal').modal('hide');
-                    // $('#bid-data-table').DataTable().ajax.reload();
+                    $('#property-data-table').DataTable().ajax.reload();
 
                 }else{
                     var error = response.data;
 
-                    // alert(error)
+                    // alert(error);
                     if(error == 'The bid amount field is required.')
                     {
 
-                        $('#bid-error-msg-add').html("The bid amount field is required.");
+                        $('#buyer-bid-error-msg-add').html("The bid amount field is required.");
                     }
                 }
            }
        });
-
-
     });
   </script>
+
+
+
