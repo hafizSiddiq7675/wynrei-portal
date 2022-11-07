@@ -281,7 +281,7 @@ class PropertyController extends Controller
                                 <td class="button-action">
                                     <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
 
-                                    <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">Edit Bid</a>
+                                    <a href="javascript:0" class="btn btn-sm btn-warning buyer-bid-edit" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerEditBidModal1">Edit Bid</a>
                                 </td>
                             ';
 

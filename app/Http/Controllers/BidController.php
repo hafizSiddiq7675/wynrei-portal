@@ -373,6 +373,34 @@ class BidController extends Controller
      }
 
 
+     public function editBidBuyer($id)
+     {
+
+        $Property = Property::where('id', $id)->first();
+        $Bid = Bid::where('property_address', $Property->property_addres)->first();
+
+        $html = '
+            <div class="mt-4 mb-4">
+                    <input type="hidden" name="buyer_property_id" id="buyer_property_id" value="'.$Property->id.'">
+                    <div class="input-group-md mt-3">
+                    <label for=""> Bid Amount *</label>
+                    <input type="number" value="'.$Bid->bid_amount.'" name="bid_amount" id=""  class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
+                    <span id="buyer-bid-error-msg-add" class="text-danger pl-1"><span>
+
+                    </div>
+
+                    <!-- Default checkbox -->
+                <div class="form-check input-group-md mt-3">
+                    <input class="form-check-input" name="agree" type="checkbox" value="1" id="flexCheckDefault" />
+                    <label class="form-check-label" for="flexCheckDefault">I agree to the terms of service and terms of bidding on WynREI.com. This offer is not final and accepted until accepted by Seller. Once accepted, this offer becomes binding.</label>
+                </div>
+            </div>
+        ';
+
+        return $html;
+     }
+
+
 
 
     public function store(Request $request)

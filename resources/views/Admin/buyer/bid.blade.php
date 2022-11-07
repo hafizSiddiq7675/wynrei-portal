@@ -14,7 +14,7 @@
 
 
 
-                      <input type="text" name="buyer_property_id" id="buyer_property_id" value="">
+                      <input type="hidden" name="buyer_property_id" id="buyer_property_id" value="">
                       <div class="input-group-md mt-3">
                         <label for=""> Bid Amount *</label>
                         <input type="number" name="bid_amount" id=""  class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
