@@ -30,14 +30,26 @@ class Acl
 
         if($role == 'Buyer')
         {
-            echo '<pre>'; print_r('Buyer'); exit;
+            $controllerAction = class_basename(Route::currentRouteAction());
+
+            if(strpos($controllerAction, 'data'))
+            {
+                return $next($request);
+            }
+
+            if( $controllerAction == 'PropertyController@index')
+            {
+                return $next($request);
+
+            }
+
+            return abort(403);
         }
 
         if($role == 'Agent')
         {
-            // return $next($request);
+
             $controllerAction = class_basename(Route::currentRouteAction());
-// echo '<pre>'; print_r($controllerAction); exit;
 
             if(strpos($controllerAction, 'data'))
             {

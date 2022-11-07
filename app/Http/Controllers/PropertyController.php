@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Acl;
 use App\Libraries\Helper;
+use App\Models\Bid;
+use App\Models\UserMarket;
 
 class PropertyController extends Controller
 {
@@ -58,7 +60,16 @@ class PropertyController extends Controller
 
                     $data = Property::where('user_id', $user->id)->get();
 
-                }else{
+                }elseif($role == 'Buyer'){
+
+
+                    $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+                    $data =  Property::whereIn('market_id', $user_markets)->get();
+
+
+
+                }
+                else{
 
                     $data = Property::all();
 
@@ -85,7 +96,17 @@ class PropertyController extends Controller
                             ->limit($limit)
                             ->orderBy($order,$dir)
                         ->get();
-                    }else{
+                    }elseif($role == 'Buyer'){
+
+                        $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+                        $properties = Property::whereIn('market_id', $user_markets)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                        ->get();
+                    }
+
+                    else{
                         $properties = Property::offset($start)
                             ->limit($limit)
                             ->orderBy($order,$dir)
@@ -126,7 +147,38 @@ class PropertyController extends Controller
 
                                 ->count();
 
-                            }else{
+                            }elseif($role == 'Buyer'){
+
+                                $user_markets = UserMarket::where('user_id', $user->id)->pluck('market_id')->toArray();
+
+                                $properties =  Property::whereIn('market_id',  $user_markets)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+
+                                    })
+                                    ->offset($start)
+                                    ->limit($limit)
+                                    ->orderBy($order, $dir)
+                                ->get();
+
+
+                                $totalFiltered =  Property::whereIn('market_id',  $user_markets)->where(function ($q) use ($search) {
+                                    $q->orWhere('id','LIKE',"%{$search}%")
+                                        ->orWhere('property_addres', 'LIKE',"%{$search}%")
+                                        ->orWhere('city', 'LIKE',"%{$search}%")
+                                        ->orWhere('state', 'LIKE',"%{$search}%")
+                                        ->orWhere('zip_code', 'LIKE',"%{$search}%");
+
+                                    })
+                                ->count();
+
+
+                            }
+
+                            else{
 
 
                                 $properties =  Property::where('id','LIKE',"%{$search}%")
@@ -188,6 +240,36 @@ class PropertyController extends Controller
                             <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
                         </td>
                     ';
+                }
+
+                if($role == 'Buyer'){
+
+                    $buyer_bid = Bid::where('user_id', auth::user()->id)
+                                ->where('property_address', $property)
+                                ->first();
+                    if($buyer_bid){
+
+                        $nestedData['action'] = '
+
+                            <td class="button-action">
+                                <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">Edit Bid</a>
+                            </td>
+                        ';
+
+                    }else{
+                        $nestedData['action'] = '
+
+                            <td class="button-action">
+                                <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
+                            </td>
+                        ';
+                    }
+
+
                 }
 
 
