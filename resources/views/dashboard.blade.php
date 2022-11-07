@@ -76,9 +76,11 @@
 
 
         <li class="nav-item dropdown open" style="padding-left: 15px;">
+
             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
               <img height="30px" width="30px"  src="{{ asset('AdminLTE-master/images/user.png') }}" alt="">{{ auth::user()->name }}
             </a>
+
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
 
               <a class="dropdown-item"  onclick="event.preventDefault();
@@ -125,21 +127,26 @@
     </div>
     <div class="">
       <ul class="nav-mobile" style="margin-left: opx;">
+        @if ($role == 'SuperAdmin')
         <li class="nav-item">
           <i class="nav-icon fas fa-user"></i>
-          <a class="nav-link-mbile ml-2" aria-current="page" href="/user">User</a>
-        </li><br/>
+          <a class="nav-link-mbile ml-2" aria-current="page" href="{{ route('users.index') }}">User</a>
+        </li>
+        @endif
+        <br/>
+        @if ($role == 'SuperAdmin')
         <li class="nav-item">
           <i class="nav-icon fas fa-industry"></i>
           <a class="nav-link-mobile ml-2" href="/market">Market</a>
         </li><br/>
+        @endif
         <li class="nav-item">
           <i class="nav-icon fas fa-building"></i>
-          <a class="nav-link-mobile ml-2" href="/property">Property</a>
+          <a class="nav-link-mobile ml-2" href="{{ route('property.index') }}">Property</a>
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-comment-dollar"></i>
-          <a class="nav-link-mobile ml-2" href="/bid">Bid</a>
+          <a class="nav-link-mobile ml-2" href="{{ route('bid.index') }}">Bid</a>
         </li>
       </ul>
     </div>
@@ -160,7 +167,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="">Home</a></li>
               <li class="breadcrumb-item active">WYNREI Portal</li>
             </ol>
           </div><!-- /.col -->
