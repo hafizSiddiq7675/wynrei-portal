@@ -503,6 +503,20 @@ class BidController extends Controller
 
                 $bid->save();
 
+
+                $property = Property::where('property_addres', $request->property_address)->first();
+                $user = User::where('id', $property->user_id)->first();
+
+                $customer = User::where('id', $request->user_id)->first();
+                $data = [
+                    'bid' => $request->bid_amount,
+                    'customer' => $customer,
+                    'link' => env('APP_URL').'bid'
+                ];
+
+
+                Mail::to($user->email)->send(new BidMail($data));
+
                 return response()->json([
                     'success' => true,
                     'data'  => 'Bid Created Successfuly'
