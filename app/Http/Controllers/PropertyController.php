@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Market;
 use App\Models\Photo;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Support\Facades\Auth;
@@ -36,8 +37,49 @@ class PropertyController extends Controller
 
         $markets = Market::all();
         return view('Admin.Properties.index', compact('markets'));
-    }
 
+    }
+    // code by aiman
+    public function view(Request $request)
+    {
+        // echo $request->message;exit;
+        $user =  auth::user();
+        $userId = Helper::userId($user);
+        $users = User::all();
+        $markets = Property::all();
+        $properties = DB::table('properties')->where('id', $id)->get()->toArray();;
+        return view('Buyer.Properties.view', compact('properties','users','markets'));
+    }
+     // code by aiman
+    public function buyerPropertyView(Request $request)
+    {
+        $options_family=null;
+        $users = User::all();
+        $markets = Property::all();
+        $id  =$request->id ;
+        $properties = Property::all()->where('id','=',$id);
+        $photoes = Photo::where('property_id', $id)->get();
+        $documents = Document::where('property_id', $id)->get();
+        foreach($properties  as $prop){
+            if($prop->property_type == 'Single-family')
+            {
+                $options_family = 'Single-family';
+
+            }elseif($prop->property_type == 'Multi-family'){
+                $options_family = 'Multi-family';
+
+            }elseif($prop->property_type == 'Commercial'){
+                $options_family = 'Commercial';
+
+            }elseif($prop->property_type == 'Industrial'){
+                $options_family = 'Industrial';
+
+            }
+
+        }
+        return view('Buyer.Properties.create', compact('properties','markets','users','options_family','photoes','documents'));
+    }
+    // code by aiman
 
     public function data(Request $request)
     {
@@ -210,78 +252,67 @@ class PropertyController extends Controller
                 foreach ($properties as $property)
                 {
 
+                    $nestedData['id'] = $property->id;
+                    $nestedData['property_addres'] = $property->property_addres;
+                    $nestedData['city'] = $property->city;
+                    $nestedData['state'] = $property->state;
+                    $nestedData['zip_code'] = $property->zip_code;
 
 
 
-                $nestedData['id'] = $property->id;
-                $nestedData['property_addres'] = $property->property_addres;
-                $nestedData['city'] = $property->city;
-                $nestedData['state'] = $property->state;
-                $nestedData['zip_code'] = $property->zip_code;
+                    if($role == 'Agent')
+                    {
+                        $nestedData['action'] = '
+                            <td class="button-action">
+                                <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
+                            </td>
+                        ';
+                    }
 
-                $user =  auth::user();
-                $role = Helper::role($user);
-                if($role == 'SuperAdmin')
-                {
-                    $nestedData['action'] = '
+                    else if($role == 'Buyer'){
+
+                        $buyer_bid = Bid::where('user_id', auth::user()->id)
+                                    ->where('property_address', $property->property_addres)
+                                    ->first();
+                        if($buyer_bid){
+
+                            $nestedData['action'] = '
+
+                                <td class="button-action">
+                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                    <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">Edit Bid</a>
+                                </td>
+                            ';
+
+                        }else{
+                            $nestedData['action'] = '
+
+                                <td class="button-action">
+                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+
+                                    <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
+                                </td>
+                            ';
+                        }
+
+
+                    }
+                    else{
+                        $nestedData['action'] = '
+
                         <td class="button-action">
                             <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
                             <a href="javascript:0" class="btn btn-sm btn-warning  edit-property" data-id='.$property->id.'  data-toggle="modal" data-target="">Edit</a>
                             <a href="javascript:0" class="btn btn-sm btn-danger delete-property" data-id='.$property->id.'   data-bs-toggle="" data-bs-target="#delModal"><i class="fa-solid fa-trash-can"></i> Delete</a>
                         </td>
-                    ';
-                }
-
-
-                if($role == 'Agent')
-                {
-                    $nestedData['action'] = '
-                        <td class="button-action">
-                            <a href="javascript:0" class="btn btn-sm btn-primary  view-property" data-id='.$property->id.'  data-toggle="modal" data-target="">View</a>
-                        </td>
-                    ';
-                }
-
-                if($role == 'Buyer'){
-
-                    $buyer_bid = Bid::where('user_id', auth::user()->id)
-                                ->where('property_address', $property->property_addres)
-                                ->first();
-                    if($buyer_bid){
-
-                        $nestedData['action'] = '
-
-                            <td class="button-action">
-                                <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
-
-                                <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">Edit Bid</a>
-                            </td>
-                        ';
-
-                    }else{
-                        $nestedData['action'] = '
-
-                            <td class="button-action">
-                                <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
-
-                                <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
-                            </td>
                         ';
                     }
 
 
-                }
 
 
-
-
-
-
-                $data[] = $nestedData;
-
-
-
-
+                    $data[] = $nestedData;
                 }
                 }
 

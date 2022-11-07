@@ -89,6 +89,10 @@ Route::resource('users', UserController::class);
 
 //Property
 Route::post('/property-data', [App\Http\Controllers\PropertyController::class, 'data'])->name('property-data');
+// code by aiman
+Route::get('/property-view/{id}', [App\Http\Controllers\PropertyController::class, 'buyerPropertyView'])->name('property-view');
+// code by aiman
+Route::get('/property-create/{id}', [App\Http\Controllers\PropertyController::class, 'view'])->name('property-view');
 Route::resource('property', PropertyController::class);
 
 ////Bid
@@ -100,4 +104,8 @@ Route::resource('bid', BidController::class);
 ////Market
 Route::post('/market-data', [App\Http\Controllers\MarketController::class, 'data'])->name('market-data');
 Route::resource('market', MarketController::class);
+
+
+///Buyer Bid Store
+Route::post('/buyer-bid', [App\Http\Controllers\BidController::class, 'buyerBid'])->name('buyer-bid');
 
