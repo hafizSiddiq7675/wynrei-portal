@@ -1,13 +1,19 @@
 
 @include('dashboard')
 @section('content')
+
 <div class = "card p-3 table-card">
 <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBidModal"> + Add Bid</button>
+    @if ($buyer_bid)
+    <button class="btn btn-warning btn-sm buyer-bid-edit" data-id="{{ $property->id }}" data-bs-toggle="modal" data-bs-target="">  Edit Bid</button>
+    @else
+    <button class="btn btn-primary btn-sm buyer-bid" data-id="{{ $property->id }}" data-bs-toggle="modal" data-bs-target="#buyerBidModal"> + Add Bid</button>
+    @endif
+
 </div>
 <form id="add-property-from"  method="post" enctype="multipart/form-data">
   @csrf
- 
+
  @foreach($properties as $propert)
     <div class=" mb-4">
 
@@ -69,14 +75,14 @@
 
 
         </div>
-        
+
         <div class="row">
         <div class="row mt-1">
             <label for=""> Photoes</label>
             <div class="col-12">
 
             @foreach($photoes as $data)
-            
+
                 <img src="{{ asset(''.$data->photo.'') }}" alt="" height="100" width="100" class="mr-2">
             @endforeach
 
@@ -160,7 +166,7 @@
             <div class="col-6">
                 <div class="input-group-md mt-3">
                     <label for="">Property Type *</label>
-                    <select required name="property_type" class="form-select form-control">
+                    <select readonly required name="property_type" class="form-control">
                         @if($options_family =='Single-family')
                         <option value="Single-family" selected>Single-family</option>
                         @elseif($options_family =='Multi-family')
@@ -178,12 +184,12 @@
 
             <div class="col-6">
                 <div class="input-group-md mt-3">
-                    <label for="">Market *</label>
-                    <select required name="market_id" class="form-control form-select">
+                    <label for="">Market </label>
+                    <select readonly required name="market_id" class="form-control ">
                         <option  disabled>Select Market</option>
                         @foreach ($markets as $market)
-                        <?php 
-                            $selected = ''; 
+                        <?php
+                            $selected = '';
                             if($market->id == $propert->market_id )
                             {
                                 $selected = 'selected';
@@ -192,7 +198,7 @@
                         ?>
                         <option {{$selected}} value="{{ $market->id }}">{{ $market->name }}</option>
                         @endforeach
-                        
+
                     </select>
                     <span id="market-error-msg-add" class="text-danger pl-1"><span>
 
@@ -271,7 +277,8 @@
     </div>
   </div>
   </form>
-
+  @include('Admin.buyer.bid')
+  @include('Admin.buyer.edit-bid')
 
 
   <script>
@@ -280,9 +287,9 @@
     /////submit
 
     $('#add-bid-from').submit(function(e) {
-      
+
        e.preventDefault();
-       
+
        var formData = new FormData(this);
 
        $.ajax({

@@ -67,7 +67,10 @@ class BidController extends Controller
                     $property_address = Property::where('user_id', $user->id)->pluck('property_addres')->toArray();
                     $data =  Bid::whereIn('property_address', $property_address)->get();
 
-                }else{
+                }elseif($role == 'Buyer'){
+                    $data = Bid::where('user_id', $user->id)->get();
+                }
+                else{
                     $data = Bid::all();
                 }
 
@@ -95,7 +98,15 @@ class BidController extends Controller
                             ->get();
 
 
-                    }else{
+                    }elseif($role == 'Buyer')
+                    {
+                        $bids = Bid::where('user_id', $user->id)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get();
+                    }
+                    else{
                         $bids = Bid::offset($start)
                             ->limit($limit)
                             ->orderBy($order,$dir)
@@ -156,7 +167,49 @@ class BidController extends Controller
 
 
 
-                    }else{
+                    }elseif($role == 'Buyer')
+                    {
+
+
+                        $bids =  Bid::where('user_id', '=',  $user->id)->where(function ($q) use ($search) {
+                            $q->orWhere('property_address', 'LIKE',"%{$search}%")
+                            ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                            ->orWhere('agree', 'LIKE',"%{$search}%")
+                                ->orWhereHas(
+                                    'user',
+                                    function ($q) use ($search) {
+                                        $q->where('name', 'LIKE',"%{$search}%")
+                                        ->orWhere('email', 'LIKE',"%{$search}%")
+                                        ->orWhere('phone', 'LIKE',"%{$search}%");
+                                    }
+                                );
+                        })
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order, $dir)
+                        ->get();
+
+
+                        $totalFiltered =  Bid::where('user_id', '=',  $user->id)->where(function ($q) use ($search) {
+                            $q->orWhere('property_address', 'LIKE',"%{$search}%")
+                            ->orWhere('bid_amount', 'LIKE',"%{$search}%")
+                            ->orWhere('agree', 'LIKE',"%{$search}%")
+                                ->orWhereHas(
+                                    'user',
+                                    function ($q) use ($search) {
+                                        $q->where('name', 'LIKE',"%{$search}%")
+                                        ->orWhere('email', 'LIKE',"%{$search}%")
+                                        ->orWhere('phone', 'LIKE',"%{$search}%");
+                                    }
+                                );
+                        })
+
+                        ->count();
+
+
+                    }
+
+                    else{
 
 
                         $bids = Bid::where('id','LIKE',"%{$search}%")
@@ -243,26 +296,42 @@ class BidController extends Controller
 
 
 
+                if($role == 'Buyer')
+                {
 
-                $nestedData['status'] = '
-
-                <td class="button-action">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-'.$class.' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            '.$bid->status.'
+                    $nestedData['status'] = '
+                        <td class="button-action">
+                        <button type="button" class="btn btn-'.$class.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        '.$bid->status.'
                         </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item text-success status-bid" data-status="Accepted" data-id="'.$bid->id.'" href="javascript:0"><b>Accept</b></a>
+                        </td>
+                    ';
 
-                            <a class="dropdown-item text-danger status-bid" data-status="Rejected" data-id="'.$bid->id.'" href="javascript:0"><b> Reject </b></a>
+                }else{
 
 
-                            <a class="dropdown-item text-warning status-bid" data-status="Pending" data-id="'.$bid->id.'" href="javascript:0"><b>Pending</b></a>
+                    $nestedData['status'] = '
 
+                    <td class="button-action">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-'.$class.' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                '.$bid->status.'
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item text-success status-bid" data-status="Accepted" data-id="'.$bid->id.'" href="javascript:0"><b>Accept</b></a>
+
+                                <a class="dropdown-item text-danger status-bid" data-status="Rejected" data-id="'.$bid->id.'" href="javascript:0"><b> Reject </b></a>
+
+
+                                <a class="dropdown-item text-warning status-bid" data-status="Pending" data-id="'.$bid->id.'" href="javascript:0"><b>Pending</b></a>
+
+                            </div>
                         </div>
-                    </div>
 
-                </td>';
+                    </td>';
+
+                }
+
 
 
 
@@ -337,40 +406,7 @@ class BidController extends Controller
      */
 
 
-     public function buyerBid(Request $request)
-     {
-        $data = $request->all();
-            $validator = Validator::make($data, [
-                'bid_amount' => 'required',
-            ]);
 
-            if($validator->fails()){
-
-                return response()->json([
-                    'success' => false,
-                    'data'  => $validator->messages()->first()
-                ]);
-
-            }
-
-            // echo '<pre>'; print_r($request->all()); exit;
-
-           $Property = Property::where('id', $request->property_id)->first();
-
-            $bid = new Bid();
-            $bid->property_address = $Property->property_addres;
-            $bid->buyer_id = auth::user()->id;
-            $bid->bid_amount = $request->bid_amount;
-            $bid->agree = $request->agree;
-
-            $bid->save();
-
-            return response()->json([
-                'success' => true,
-                'data'  => 'Bid Created Successfuly'
-            ]);
-
-     }
 
 
      public function editBidBuyer($id)
@@ -379,19 +415,24 @@ class BidController extends Controller
         $Property = Property::where('id', $id)->first();
         $Bid = Bid::where('property_address', $Property->property_addres)->first();
 
+        $checked = '';
+        if($Bid->agree == '1')
+        {
+            $checked = 'checked';
+        }
         $html = '
             <div class="mt-4 mb-4">
                     <input type="hidden" name="buyer_property_id" id="buyer_property_id" value="'.$Property->id.'">
                     <div class="input-group-md mt-3">
                     <label for=""> Bid Amount *</label>
                     <input type="number" value="'.$Bid->bid_amount.'" name="bid_amount" id=""  class="form-control" placeholder="Enter Amount" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" >
-                    <span id="buyer-bid-error-msg-add" class="text-danger pl-1"><span>
+                    <span id="buyer-bid-error-msg-update" class="text-danger pl-1"><span>
 
                     </div>
 
                     <!-- Default checkbox -->
                 <div class="form-check input-group-md mt-3">
-                    <input class="form-check-input" name="agree" type="checkbox" value="1" id="flexCheckDefault" />
+                    <input '.$checked.' class="form-check-input" name="agree" type="checkbox" value="1" id="flexCheckDefault" />
                     <label class="form-check-label" for="flexCheckDefault">I agree to the terms of service and terms of bidding on WynREI.com. This offer is not final and accepted until accepted by Seller. Once accepted, this offer becomes binding.</label>
                 </div>
             </div>
@@ -462,6 +503,20 @@ class BidController extends Controller
 
                 $bid->save();
 
+
+                $property = Property::where('property_addres', $request->property_address)->first();
+                $user = User::where('id', $property->user_id)->first();
+
+                $customer = User::where('id', $request->user_id)->first();
+                $data = [
+                    'bid' => $request->bid_amount,
+                    'customer' => $customer,
+                    'link' => env('APP_URL').'bid'
+                ];
+
+
+                Mail::to($user->email)->send(new BidMail($data));
+
                 return response()->json([
                     'success' => true,
                     'data'  => 'Bid Created Successfuly'
@@ -483,6 +538,9 @@ class BidController extends Controller
 
      public function bidBuyer(Request $request)
      {
+
+
+
         $data = $request->all();
             $validator = Validator::make($data, [
                 'bid_amount' => 'required',
@@ -497,19 +555,51 @@ class BidController extends Controller
 
             }
 
+
+
                 $Property = Property::where('id', $request->buyer_property_id)->first();
                 $user_id = auth::user()->id;
 
-                $bid = new Bid();
-                $bid->property_address = $Property->property_addres;
-                $bid->user_id = $user_id;
-                $bid->bid_amount = $request->bid_amount;
-                $bid->agree = $request->agree;
+                $bid = Bid::where('user_id', $user_id)
+                        ->where('property_address', '=', $Property->property_addres)
+                        ->first();
+                if($bid)
+                {
 
-                $bid->save();
+                    $bid->bid_amount = $request->bid_amount;
+                    $bid->agree = $request->agree;
+
+                    $bid->save();
 
 
-                // $property = Property::where('property_addres', $request->property_address)->first();
+                    $property_user = User::where('id', $Property->user_id)->first();
+
+                    $customer = User::where('id', $user_id)->first();
+                    $data = [
+                        'bid' => $request->bid_amount,
+                        'customer' => $customer,
+                        'link' => env('APP_URL').'bid'
+                    ];
+                    Mail::to($property_user->email)->send(new BidMail($data));
+
+
+                    return response()->json([
+                        'success' => true,
+                        'data'  => 'Bid Updated Successfuly'
+                    ]);
+
+                }
+
+                    $bid = new Bid();
+                    $bid->property_address = $Property->property_addres;
+                    $bid->user_id = $user_id;
+                    $bid->bid_amount = $request->bid_amount;
+                    $bid->agree = $request->agree;
+
+                    $bid->save();
+
+
+
                 $property_user = User::where('id', $Property->user_id)->first();
 
                 $customer = User::where('id', $user_id)->first();

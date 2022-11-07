@@ -14,15 +14,22 @@ swal({
 </script>
 @endif
     <div class="card p-3 table-card">
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPropertyModal">Add Property</button>
-        </div>
+
+            @if ($role == 'Agent' || $role == 'SuperAdmin')
+            <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPropertyModal">Add Property </button>
+            </div>
+
+
+            @endif
+
+
        <div class="table-responsive">
         <table class="table table-hover" id="property-data-table" width="100%">
             <thead class="bg-primary text-white header-border text-center">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Address</th>
+                <th scope="col">Address1</th>
                 <th scope="col">City </th>
                 <th scope="col">State</th>
                 <th scope="col">Zip</th>

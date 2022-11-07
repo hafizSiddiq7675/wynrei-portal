@@ -33,6 +33,12 @@
   * sidebar-collapse
   * sidebar-mini
 -->
+
+@php
+    use App\Libraries\Helper;
+    $user =  auth::user();
+    $role = Helper::role($user);
+@endphp
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -45,24 +51,45 @@
       <li class="nav-item toggel-buuton">
         <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i class="fas fa-bars"></i></a>
       </li>
+      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block" style="margin-left: -30px;">
-        <a href="/users" class="nav-link">User</a>
+        <a href="{{ route('users.index') }}" class="nav-link">User</a>
       </li>
+      @endif
+
       <li class="nav-item d-none d-sm-inline-block ml-3">
-        <a href="/property" class="nav-link">Property</a>
+        <a href="{{ route('property.index') }}" class="nav-link">Property</a>
       </li>
+      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block ml-3">
-        <a href="/market" class="nav-link">Market</a>
+        <a href="{{ route('market.index') }}" class="nav-link">Market</a>
       </li>
+      @endif
+
       <li class="nav-item d-none d-sm-inline-block ml-3">
-        <a href="/bid" class="nav-link">Bid</a>
+        <a href="{{ route('bid.index') }}" class="nav-link">Bid</a>
       </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto mr-4">
+
+
+        <li class="nav-item dropdown open" style="padding-left: 15px;">
+            <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+              <img height="30px" width="30px"  src="{{ asset('AdminLTE-master/images/user.png') }}" alt="">{{ auth::user()->name }}
+            </a>
+            <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+
+              <a class="dropdown-item"  onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();"  href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+            </div>
+          </li>
       <!-- Navbar Search -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -81,12 +108,12 @@
             </div>
           </form>
         </div>
-      </li>
-      <li class="nav-item">
+      </li> --}}
+      {{-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
         </a>
-      </li>
+      </li> --}}
     </ul>
   </nav>
 

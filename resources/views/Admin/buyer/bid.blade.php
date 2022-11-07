@@ -52,7 +52,7 @@
    ///////////////////////////////Submit
    $(document).on('click', '#buyer-bid-btn', function(e){
        e.preventDefault();
-            alert('hi');
+           
         $.ajaxSetup({
             headers: {
                 "_token": "{{ csrf_token() }}",
@@ -65,10 +65,8 @@
             data: $('#buyer-bid-from').serialize(),
            success: (response) => {
 
-            // $('#user-error-msg-add').html('');
-            // $('#property-error-msg-add').html('');
-            // $('#bid-error-msg-add').html('');
-            // alert(response);
+            $('#buyer-bid-error-msg-add').html('');
+
             if(response.success == true)
                 {
 
@@ -86,7 +84,6 @@
                 }else{
                     var error = response.data;
 
-                    // alert(error);
                     if(error == 'The bid amount field is required.')
                     {
 
