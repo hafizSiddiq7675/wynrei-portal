@@ -35,8 +35,10 @@ class PropertyController extends Controller
     public function index()
     {
 
+        $user =  auth::user();
+        $role = Helper::role($user);
         $markets = Market::all();
-        return view('Admin.Properties.index', compact('markets'));
+        return view('Admin.Properties.index', compact('markets', 'role'));
 
     }
     // code by aiman
@@ -53,13 +55,22 @@ class PropertyController extends Controller
      // code by aiman
     public function buyerPropertyView(Request $request)
     {
+
         $options_family=null;
         $users = User::all();
-        $markets = Property::all();
-        $id  =$request->id ;
+        $markets = Market::all();
+        $id  =$request->id;
         $properties = Property::all()->where('id','=',$id);
         $photoes = Photo::where('property_id', $id)->get();
         $documents = Document::where('property_id', $id)->get();
+
+        $property = Property::where('id','=',$request->id)->first();
+
+        $buyer_bid = Bid::where('user_id', auth::user()->id)
+        ->where('property_address', $property->property_addres)
+        ->first();
+
+
         foreach($properties  as $prop){
             if($prop->property_type == 'Single-family')
             {
@@ -77,7 +88,7 @@ class PropertyController extends Controller
             }
 
         }
-        return view('Buyer.Properties.create', compact('properties','markets','users','options_family','photoes','documents'));
+        return view('Buyer.Properties.create', compact('properties','markets','users','options_family','photoes','documents', 'buyer_bid', 'property'));
     }
     // code by aiman
 
@@ -279,9 +290,9 @@ class PropertyController extends Controller
                             $nestedData['action'] = '
 
                                 <td class="button-action">
-                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+                                    <a href="property-view/'.$property->id.'" class="btn btn-sm btn-primary  view-property" >View</a>
 
-                                    <a href="javascript:0" class="btn btn-sm btn-warning buyer-bid-edit" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerEditBidModal1">Edit Bid</a>
+                                    <a href="javascript:0" class="btn btn-sm btn-warning buyer-bid-edit" data-id='.$property->id.'  data-bs-toggle="" data-bs-target="#">Edit Bid</a>
                                 </td>
                             ';
 
@@ -289,7 +300,7 @@ class PropertyController extends Controller
                             $nestedData['action'] = '
 
                                 <td class="button-action">
-                                    <a href="property-view/'.$property->user_id.'" class="btn btn-sm btn-primary  view-property" >View</a>
+                                    <a href="property-view/'.$property->id.'" class="btn btn-sm btn-primary  view-property" >View</a>
 
                                     <a href="javascript:0" class="btn btn-sm btn-primary buyer-bid" data-id='.$property->id.'  data-bs-toggle="modal" data-bs-target="#buyerBidModal">+ Add Bid</a>
                                 </td>

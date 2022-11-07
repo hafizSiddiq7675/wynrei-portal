@@ -101,6 +101,11 @@ var table =  $('#bid-data-table').DataTable({
         table.column( 8 ).visible( false );
     }
 
+    if(role == 'Buyer')
+    {
+        table.column( 8 ).visible( false );
+    }
+
 });
 
 

@@ -22,7 +22,7 @@ class Acl
         //
         $user =  auth::user();
         $role = Helper::role($user);
-        // echo '<pre>'; print_r('here'); exit;
+
         if($role == 'SuperAdmin')
         {
             return $next($request);
@@ -31,7 +31,7 @@ class Acl
         if($role == 'Buyer')
         {
             $controllerAction = class_basename(Route::currentRouteAction());
-            
+
             if(strpos($controllerAction, 'data'))
             {
                 return $next($request);
@@ -43,6 +43,11 @@ class Acl
 
             }
 
+            if( $controllerAction == 'PropertyController@buyerPropertyView')
+            {
+                return $next($request);
+            }
+
             if( $controllerAction == 'BidController@bidBuyer')
             {
                 return $next($request);
@@ -50,6 +55,13 @@ class Acl
             }
 
             if( $controllerAction == 'BidController@editBidBuyer')
+            {
+                return $next($request);
+
+            }
+
+
+            if( $controllerAction == 'BidController@index')
             {
                 return $next($request);
 

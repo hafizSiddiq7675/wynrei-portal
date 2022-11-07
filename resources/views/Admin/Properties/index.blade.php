@@ -15,7 +15,12 @@ swal({
 @endif
     <div class="card p-3 table-card">
         <div class="d-flex justify-content-end mb-3">
+            @if ($role = 'Buyer')
+
+            @else
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPropertyModal">Add Property</button>
+            @endif
+
         </div>
        <div class="table-responsive">
         <table class="table table-hover" id="property-data-table" width="100%">
