@@ -31,13 +31,19 @@ class Acl
         if($role == 'Buyer')
         {
             $controllerAction = class_basename(Route::currentRouteAction());
-
+// echo '<pre>'; print_r($controllerAction); exit;
             if(strpos($controllerAction, 'data'))
             {
                 return $next($request);
             }
 
             if( $controllerAction == 'PropertyController@index')
+            {
+                return $next($request);
+
+            }
+
+            if( $controllerAction == 'BidController@bidBuyer')
             {
                 return $next($request);
 

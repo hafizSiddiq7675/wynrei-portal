@@ -245,7 +245,7 @@ class PropertyController extends Controller
                 if($role == 'Buyer'){
 
                     $buyer_bid = Bid::where('user_id', auth::user()->id)
-                                ->where('property_address', $property)
+                                ->where('property_address', $property->property_addres)
                                 ->first();
                     if($buyer_bid){
 

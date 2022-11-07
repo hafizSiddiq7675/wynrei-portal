@@ -432,6 +432,58 @@ class BidController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+     public function bidBuyer(Request $request)
+     {
+        $data = $request->all();
+            $validator = Validator::make($data, [
+                'bid_amount' => 'required',
+            ]);
+
+            if($validator->fails()){
+
+                return response()->json([
+                    'success' => false,
+                    'data'  => $validator->messages()->first()
+                ]);
+
+            }
+
+                $Property = Property::where('id', $request->buyer_property_id)->first();
+                $user_id = auth::user()->id;
+
+                $bid = new Bid();
+                $bid->property_address = $Property->property_addres;
+                $bid->user_id = $user_id;
+                $bid->bid_amount = $request->bid_amount;
+                $bid->agree = $request->agree;
+
+                $bid->save();
+
+
+                // $property = Property::where('property_addres', $request->property_address)->first();
+                $property_user = User::where('id', $Property->user_id)->first();
+
+                $customer = User::where('id', $user_id)->first();
+                $data = [
+                    'bid' => $request->bid_amount,
+                    'customer' => $customer,
+                    'link' => env('APP_URL').'bid'
+                ];
+                Mail::to($property_user->email)->send(new BidMail($data));
+
+
+
+                return response()->json([
+                    'success' => true,
+                    'data'  => 'Bid Created Successfuly'
+                ]);
+     }
+
+
+
+
     public function show($id)
     {
         //
