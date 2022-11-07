@@ -42,52 +42,27 @@
       {{-- <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li> --}}
-      @php
-            use App\Libraries\Helper;
-            $user =  auth::user();
-            $role = Helper::role($user);
-      @endphp
-
-
-
       <li class="nav-item toggel-buuton">
         <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i class="fas fa-bars"></i></a>
       </li>
-      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block" style="margin-left: -30px;">
-        <a href="{{ route('users.index') }}" class="nav-link">User</a>
+        <a href="/user" class="nav-link">User</a>
       </li>
-      @endif
-
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/property" class="nav-link">Property</a>
       </li>
-      @if ($role == 'SuperAdmin')
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/market" class="nav-link">Market</a>
       </li>
-      @endif
       <li class="nav-item d-none d-sm-inline-block ml-3">
         <a href="/bid" class="nav-link">Bid</a>
       </li>
-
-      <li class="nav-item d-none d-sm-inline-block ml-3">
-        <a href="/support" class="nav-link">Support</a>
-      </li>
-
-      <li class="nav-item d-none d-sm-inline-block ml-3">
-        <a href="/settings" class="nav-link">Settings</a>
-      </li>
-
-
-
-
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto mr-4">
       <!-- Navbar Search -->
-      {{-- <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -106,34 +81,11 @@
             </div>
           </form>
         </div>
-      </li> --}}
-      {{-- <li class="nav-item">
-        <a class="nav-link"  data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i> DarkMode
-        </a>
-      </li> --}}
-      <li>
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onclick="toggleTheme()" />
-          <label class="form-check-label" for="flexSwitchCheckChecked">Dark Mode</label>
-        </div>
-
       </li>
-
-
-      <li class="nav-item dropdown open" style="padding-left: 15px;">
-        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-          <img src="{{ asset('AdminLTE-master/images/user.png') }}" alt="" height="30px;" width="30px;">{{ auth::user()->name }}
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i>
         </a>
-        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-
-          <a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="fa fa-sign-out pull-right"></i> Log Out
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
-        </a>
-        </div>
       </li>
     </ul>
   </nav>
@@ -152,7 +104,7 @@
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-industry"></i>
-          <a class="nav-link-mobile ml-2" href="{{ route('market.index') }}">Market</a>
+          <a class="nav-link-mobile ml-2" href="/market">Market</a>
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-building"></i>
@@ -160,7 +112,7 @@
         </li><br/>
         <li class="nav-item">
           <i class="nav-icon fas fa-comment-dollar"></i>
-          <a class="nav-link-mobile ml-2" href="{{ route('bid.index') }}">Bid</a>
+          <a class="nav-link-mobile ml-2" href="/bid">Bid</a>
         </li>
       </ul>
     </div>
@@ -168,7 +120,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-
+ 
 
   <!-- Content Wrapper. Contains page content -->
   <div class="ml-4 mr-4">
@@ -465,12 +417,6 @@
 
 <!-- REQUIRED SCRIPTS -->
 
-<script>
-  function toggleTheme(){
-  document.body.classList.toggle('dark-mode');
-}
-</script>
-
 <!-- jQuery -->
 <script src="{{asset('AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
@@ -479,7 +425,7 @@
 <script src="{{asset('AdminLTE-master/dist/js/adminlte.js')}}"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="{{asset('AdminLTE-master/plugins/chart.js/Chart.min.js')}}"></script>
+{{-- <script src="{{asset('AdminLTE-master/plugins/chart.js/Chart.min.js')}}"></script> --}}
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('AdminLTE-master/dist/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
