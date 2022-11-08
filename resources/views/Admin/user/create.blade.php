@@ -115,7 +115,7 @@
 
 
                             var error = response.data;
-                           
+
 
                             if(error == 'The name field is required.')
                             {

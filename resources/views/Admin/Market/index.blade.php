@@ -89,7 +89,7 @@ var table =  $('#market-data-table').DataTable({
 
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
+                text: "Once deleted, you will not be able to recover this market record!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -109,7 +109,7 @@ var table =  $('#market-data-table').DataTable({
                         success: function (response) {
 
                             $('#market-data-table').DataTable().ajax.reload();
-                            swal("Poof! User has been deleted!", {
+                            swal("Poof! market has been deleted!", {
                                 icon: "success",
                                 timer: 1000,
                             });
@@ -120,7 +120,7 @@ var table =  $('#market-data-table').DataTable({
 
 
                 } else {
-                    swal("Your Market is safe!");
+                    swal("Your market is safe!");
                 }
             });
 
