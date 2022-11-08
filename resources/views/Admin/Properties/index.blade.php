@@ -114,7 +114,7 @@ $(document).on('click', '.delete-property', function(){
 
   swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
+      text: "Once deleted, you will not be able to recover property record!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -134,7 +134,7 @@ $(document).on('click', '.delete-property', function(){
               success: function (response) {
 
                   $('#property-data-table').DataTable().ajax.reload();
-                  swal("Poof! Property has been deleted!", {
+                  swal("Poof! property has been deleted!", {
                       icon: "success",
                       timer: 1000,
                   });
@@ -145,7 +145,7 @@ $(document).on('click', '.delete-property', function(){
 
 
       } else {
-          swal("Your Category is safe!");
+          swal("Your property is safe!");
       }
   });
 

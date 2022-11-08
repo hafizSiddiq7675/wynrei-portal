@@ -116,7 +116,7 @@ var table =  $('#bid-data-table').DataTable({
 
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
+                text: "Once deleted, you will not be able to recover this bid record!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -136,7 +136,7 @@ var table =  $('#bid-data-table').DataTable({
                         success: function (response) {
 
                             $('#bid-data-table').DataTable().ajax.reload();
-                            swal("Poof! Bid has been deleted!", {
+                            swal("Poof! bid has been deleted!", {
                                 icon: "success",
                                 timer: 1000,
                             });
@@ -147,7 +147,7 @@ var table =  $('#bid-data-table').DataTable({
 
 
                 } else {
-                    swal("Your Bid is safe!");
+                    swal("Your bid is safe!");
                 }
             });
 

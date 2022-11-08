@@ -99,7 +99,7 @@
 
             swal({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this imaginary file!",
+                text: "Once deleted, you will not be able to recover user account!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -130,7 +130,7 @@
 
 
                 } else {
-                    swal("Your Category is safe!");
+                    swal("Your user account is safe!");
                 }
             });
 

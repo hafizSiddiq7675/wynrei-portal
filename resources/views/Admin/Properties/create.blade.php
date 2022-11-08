@@ -310,7 +310,7 @@
             if(response.success == true)
                 {
                     swal({
-                        title: "Updated",
+                        title: "Created",
                         text: response.data,
                         icon: "success",
                         button: "OK!",
