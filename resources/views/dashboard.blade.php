@@ -23,6 +23,7 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
+
 </head>
 <!--
 `body` tag options:
@@ -73,7 +74,12 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto mr-4">
-
+      <li>
+         <button id="theme-toggle" type="button" class="bg-white toggle-button">
+                <svg id="theme-toggle-dark-icon"  class="sun-icon mt-1" width="25" height="20" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="moon-icon"  hidden="true" width="20" height="15" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+      </li>
 
         <li class="nav-item dropdown open" style="padding-left: 15px;">
 
@@ -450,7 +456,54 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+{{-- <script>
+function darkmode() {
+    document.body.classList.toggle('dark-mode');
+    document.getElementById('toggleknop').innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-moon fa-2x" id="maan" style="color:#737eac;"></i>' : '<i class="fas fa-sun fa-2x" id="zon" style="color:#d8c658;"></i>';
+}
+</script> --}}
 
+
+<script>
+
+  var darkMode = false;
+  
+  var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+
+ 
+  
+
+  // default to system setting
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    darkMode = true;
+  }
+  
+  // preference from localStorage should overwrite
+  if (localStorage.getItem('theme') === 'dark') {
+  themeToggleDarkIcon.style.display = "block";
+    darkMode = true;
+   
+  } else if (localStorage.getItem('theme') !== 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+    darkMode = false;
+  }
+  
+  if (darkMode) {
+    document.body.classList.toggle('dark');
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+  
+  });
+  
+  </script>
 <!-- jQuery -->
 <script src="{{asset('AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
